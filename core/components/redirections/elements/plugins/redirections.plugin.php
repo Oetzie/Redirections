@@ -1,4 +1,5 @@
 <?php
+
 	/**
 	 * Redirections
 	 *
@@ -34,20 +35,24 @@
     			$request = str_replace($baseUrl, '', $request);
 			}
 
-			$request = ltrim($request, '/');
+			$request = trim($request, '/');
 
 			if (!empty($request)) {
-				$redirects = $modx->getCollection('Redirects', array('context' => $modx->context->key));
+				$redirects = $modx->getCollection('Redirects', array('context' => $modx->context->key, 'active' => 1));
 
 				foreach ($redirects as $redirect) {
 					$redirect = $redirect->toArray();
 
 					if (preg_match('/^'.str_replace('%', '(.+?)', preg_quote(ltrim($redirect['old'], '/'), '/')).'$/i', $request)) {
-						$modx->parser->processElementTags('', $redirect['new'], true, true);
+						if (preg_match('/^(\[\[\~([0-9]+)\]\])$/', $redirect['new'], $matches)) {
+							if (isset($matches[2])) {
+								$redirect['new'] = $modx->makeUrl($matches[2]);
+							}
+						}
 
 						if ($redirect['new'] != $modx->resourceIdentifier && $redirect['new'] != $search) {
 							if (false === strpos($redirect['new'], '://')) {
-								$redirect['new'] = $modx->getOption('site_url').$redirect['new'];
+								$redirect['new'] = $modx->getOption('site_url').ltrim($redirect['new'], '/');
 						 	}
 
 						  	$modx->sendRedirect($redirect['new'], array('responseCode' => $redirect['type']));
@@ -60,3 +65,4 @@
 	}
 	
 	return;
+?>

@@ -1,11 +1,15 @@
-++++++++++++++++++++++++++++++++
-++   Redirections 1.0.1-pl    ++
-++   Released on 2014-03-09   ++
-++++++++++++++++++++++++++++++++
+----------------------
+Redirections
+----------------------
+
+----------------------
+Version: 1.0.1-pl
+Released: 2014-03-09
+----------------------
 - Added an active/nonactive function to activate or deactivate an redirect
 
-++++++++++++++++++++++++++++++++
-++   Redirections 1.0.0-pl    ++
-++   Released on 2014-01-22   ++
-++++++++++++++++++++++++++++++++
+----------------------
+Version: 1.0.0-pl
+Released: 2014-01-22
+----------------------
 - First release
