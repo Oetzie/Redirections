@@ -39,6 +39,8 @@
 	$_lang['redirections.context']							= 'Context';
 	$_lang['redirections.context_desc']						= 'The context of the redirect.';
 	$_lang['redirections.type']								= 'Redirect type';
-	$_lang['redirections.type_desc']							= 'The type of the redirect.';
+	$_lang['redirections.type_desc']						= 'The type of the redirect.';
+	$_lang['redirections.active']							= 'Active';
+	$_lang['redirections.active_desc']						= '';
 	
 ?>

@@ -26,9 +26,9 @@
 	
 	class RedirectionsUpdateFromGridProcessor extends RedirectionsUpdateProcessor {
 		/**
-		* @acces public.
-		* @return Mixed.
-		*/
+		 * @acces public.
+		 * @return Mixed.
+		 */
 		public function initialize() {
 			$data = $this->getProperty('data');
 			

@@ -68,6 +68,14 @@ Redirections.grid.Redirects = function(config) {
             	xtype		: 'redirections-combo-xtype'
             }
         }, {
+            header		: _('redirections.active'),
+            dataIndex	: 'active',
+            sortable	: true,
+            editable	: false,
+            width		: 100,
+            fixed		: true,
+			renderer	: this.renderActive
+        }, {
             header		: _('last_modified'),
             dataIndex	: 'editedon',
             sortable	: true,
@@ -92,7 +100,7 @@ Redirections.grid.Redirects = function(config) {
         },
         autosave	: true,
         save_action	: 'mgr/updateFromGrid',
-        fields		: ['id', 'context', 'old', 'new', 'type', 'editedon'],
+        fields		: ['id', 'context', 'old', 'new', 'type', 'active', 'editedon'],
         paging		: true,
         pageSize	: MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
         grouping	: true,
@@ -176,7 +184,12 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
             	}
             }
     	});
-    }
+    },
+    renderActive: function(d, c) {
+    	c.css = ('1' == d || 1 == d) ? 'green' : 'red';
+    	
+    	return ('1' == d || 1 == d) ? _('yes') : _('no');
+    },
 });
 
 Ext.reg('redirections-grid-redirects', Redirections.grid.Redirects);
@@ -235,6 +248,17 @@ Redirections.window.CreateRedirect = function(config) {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
         	html		: _('redirections.type_desc'),
         	cls			: 'desc-under'
+        }, {
+	        xtype		: 'checkbox',
+            fieldLabel	: _('redirections.active'),
+            description	: MODx.expandHelp ? '' : _('redirections.active_desc'),
+            name		: 'active',
+            inputValue	: 1,
+            checked		: true
+        }, {
+        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+            html		: _('redirections.active_desc'),
+            cls			: 'desc-under'
         }]
     });
     
@@ -302,6 +326,16 @@ Redirections.window.UpdateRedirect = function(config) {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
         	html		: _('redirections.type_desc'),
         	cls			: 'desc-under'
+        }, {
+	        xtype		: 'checkbox',
+            fieldLabel	: _('redirections.active'),
+            description	: MODx.expandHelp ? '' : _('redirections.active_desc'),
+            name		: 'active',
+            inputValue	: 1
+        }, {
+        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+            html		: _('redirections.active_desc'),
+            cls			: 'desc-under'
         }]
     });
     

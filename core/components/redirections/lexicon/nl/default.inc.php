@@ -39,6 +39,8 @@
 	$_lang['redirections.context']							= 'Context';
 	$_lang['redirections.context_desc']						= 'De context waarvoor de verwijzing geldig is.';
 	$_lang['redirections.type']								= 'Verwijzings type';
-	$_lang['redirections.type_desc']							= 'De type van de verwijzing.';
+	$_lang['redirections.type_desc']						= 'De type van de verwijzing.';
+	$_lang['redirections.active']							= 'Actief';
+	$_lang['redirections.active_desc']						= '';
 	
 ?>

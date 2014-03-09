@@ -33,6 +33,7 @@
 			'old' 			=> null,
 			'new' 			=> null,
 			'type' 			=> null,
+			'active'		=> null,
 			'editedon' 		=> null
 		),
 		'fieldMeta'	=> array(
@@ -67,6 +68,13 @@
 				'precision' => '75',
 				'phptype' 	=> 'string',
 				'null' 		=> false
+			),
+			'active'	=> array(
+				'dbtype' 	=> 'int',
+				'precision' => '1',
+				'phptype' 	=> 'integer',
+				'null' 		=> false,
+				'default'	=> 0
 			),
 			'editedon' 	=> array(
 				'dbtype' 	=> 'timestamp',
