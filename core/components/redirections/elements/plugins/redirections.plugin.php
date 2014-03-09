@@ -38,7 +38,7 @@
 			$request = trim($request, '/');
 
 			if (!empty($request)) {
-				$redirects = $modx->getCollection('Redirects', array('context' => $modx->context->key, 'AND:active' => 1));
+				$redirects = $modx->getCollection('Redirects', array('context' => $modx->context->key, 'active' => 1));
 
 				foreach ($redirects as $redirect) {
 					$redirect = $redirect->toArray();
