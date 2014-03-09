@@ -74,7 +74,7 @@
 				'precision' => '1',
 				'phptype' 	=> 'integer',
 				'null' 		=> false,
-				'default'	=> 0
+				'default'	=> 1
 			),
 			'editedon' 	=> array(
 				'dbtype' 	=> 'timestamp',
