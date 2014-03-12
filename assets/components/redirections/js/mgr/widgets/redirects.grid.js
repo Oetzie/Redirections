@@ -71,10 +71,13 @@ Redirections.grid.Redirects = function(config) {
             header		: _('redirections.active'),
             dataIndex	: 'active',
             sortable	: true,
-            editable	: false,
+            editable	: true,
             width		: 100,
             fixed		: true,
-			renderer	: this.renderActive
+			renderer	: this.renderActive,
+			editor		: {
+            	xtype		: 'redirections-combo-xactive'
+            }
         }, {
             header		: _('last_modified'),
             dataIndex	: 'editedon',
@@ -189,7 +192,7 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
     	c.css = ('1' == d || 1 == d) ? 'green' : 'red';
     	
     	return ('1' == d || 1 == d) ? _('yes') : _('no');
-    },
+    }
 });
 
 Ext.reg('redirections-grid-redirects', Redirections.grid.Redirects);
@@ -404,3 +407,29 @@ Redirections.combo.RedirectTypes = function(config) {
 Ext.extend(Redirections.combo.RedirectTypes, MODx.combo.ComboBox);
 
 Ext.reg('redirections-combo-xtype', Redirections.combo.RedirectTypes);
+
+Redirections.combo.RedirectActive = function(config) {
+    config = config || {};
+    
+    Ext.applyIf(config, {
+        store: new Ext.data.ArrayStore({
+            mode	: 'local',
+            fields	: ['active','label'],
+            data	: [
+                [1, _('yes')],
+               	[0, _('no')]
+            ]
+        }),
+        remoteSort	: ['label', 'asc'],
+        hiddenName	: 'active',
+        valueField	: 'active',
+        displayField: 'label',
+        mode		: 'local'
+    });
+    
+    Redirections.combo.RedirectActive.superclass.constructor.call(this,config);
+};
+
+Ext.extend(Redirections.combo.RedirectActive, MODx.combo.ComboBox);
+
+Ext.reg('redirections-combo-xactive', Redirections.combo.RedirectActive);

@@ -72,6 +72,22 @@
 		public function getHelpUrl() {
 			return $this->config['helpurl'];
 		}
+		
+		/**
+		 * @acces public.
+		 * @return Array.
+		 */
+		public function getRedirects() {
+			$redirects = array();
+			
+			$collection = $this->modx->getCollection('Redirects', array('context' => $this->modx->context->key, 'active' => 1));
+			
+			foreach($collection as $key => $redirect) {
+				$redirects[$key] = $redirect->toArray();
+			}
+			
+			return $redirects;
+		}
 	}
 	
 ?>
