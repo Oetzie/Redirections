@@ -7,6 +7,7 @@ Version: 1.0.1-pl
 Released: 2014-03-09
 ----------------------
 - Added an active/nonactive function to activate or deactivate an redirect
+- Filter at context by the grid
 - Bugfixed with seo-friendly url for the start page
 
 ----------------------

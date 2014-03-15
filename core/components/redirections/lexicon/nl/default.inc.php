@@ -23,10 +23,10 @@
 	 */
 
 	$_lang['redirections'] 									= 'Verwijzingen';
-	$_lang['redirections.desc'] 								= 'Wijzig of maak site-brede verwijzingen.';
+	$_lang['redirections.desc'] 							= 'Wijzig of maak site-brede verwijzingen.';
 	$_lang['redirections.redirect']							= 'Verwijzing';
-	$_lang['redirections.redirects']							= 'Verwijzingen';
-	$_lang['redirections.redirects_desc']						= 'Hier kun je alle verwijzingen instellen voor jouw MODX website. Een verwijzing is bedoelt om een oude pagina naar de nieuwe locatie te verwijzen, bijvoorbeeld links die verwijzen vanuit andere sites naar jouw site. Dode links, vooral die van Google, zijn slecht voor je SEO. Voor een wildcard in de oude URL gebruik % en als nieuwe URL kun je een resource alias of [[~ID]] gebruiken.';
+	$_lang['redirections.redirects']						= 'Verwijzingen';
+	$_lang['redirections.redirects_desc']					= 'Hier kun je alle verwijzingen instellen voor jouw MODX website. Een verwijzing is bedoelt om een oude pagina naar de nieuwe locatie te verwijzen, bijvoorbeeld links die verwijzen vanuit andere sites naar jouw site. Dode links, vooral die van Google, zijn slecht voor je SEO. Voor een wildcard in de oude URL gebruik % en als nieuwe URL kun je een resource alias of [[~ID]] gebruiken.';
 	$_lang['redirections.redirect_create']					= 'Maak nieuwe verwijzing';
 	$_lang['redirections.redirect_update']					= 'Verwijzing updaten';
 	$_lang['redirections.redirect_remove']					= 'Verwijzing verwijderen';
@@ -42,5 +42,7 @@
 	$_lang['redirections.type_desc']						= 'De type van de verwijzing.';
 	$_lang['redirections.active']							= 'Actief';
 	$_lang['redirections.active_desc']						= '';
+	
+	$_lang['redirections.filter_context']						= 'Filter op context...';
 	
 ?>

@@ -4,14 +4,28 @@ Redirections.grid.Redirects = function(config) {
 	config.tbar = [{
         text	: _('redirections.redirect_create'),
         handler	: this.createRedirect
-    }, '->', {
+   }];
+    
+    config.tbar.push('->', {
+    	xtype		: 'redirections-combo-context',
+    	name		: 'redirections-filter-context',
+        id			: 'redirections-filter-context',
+        emptyText	: _('redirections.filter_context'),
+        listeners	: {
+        	'select'	: {
+	            	fn			: this.filterContext,
+	            	scope		: this   
+		    }
+		},
+		width: 250
+    }, '-', {
         xtype		: 'textfield',
         name 		: 'redirects-filter-search',
         id			: 'redirects-filter-search',
         emptyText	: _('search')+'...',
         listeners	: {
 	        'change'	: {
-	        	fn			: this.filter,
+	        	fn			: this.filterSearch,
 	        	scope		: this
 	        },
 	        'render'		: {
@@ -35,7 +49,7 @@ Redirections.grid.Redirects = function(config) {
         		scope	: this
         	}
         }
-    }];
+    });
 
     this.cm = new Ext.grid.ColumnModel({
         columns: [{
@@ -116,7 +130,11 @@ Redirections.grid.Redirects = function(config) {
 };
 
 Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
-    filter: function(tf, nv, ov) {
+	filterContext: function(tf, nv, ov) {
+        this.getStore().baseParams.context = tf.getValue();
+        this.getBottomToolbar().changePage(1);
+    },
+    filterSearch: function(tf, nv, ov) {
         this.getStore().baseParams.query = tf.getValue();
         this.getBottomToolbar().changePage(1);
     },
@@ -369,8 +387,7 @@ Redirections.combo.Context = function(config) {
         hiddenName	: 'context',
         valueField	: 'label',
         displayField: 'label',
-        mode		: 'local',
-        value		: contexts[0]
+        mode		: 'local'
     });
     
     Redirections.combo.Context.superclass.constructor.call(this,config);
@@ -379,6 +396,32 @@ Redirections.combo.Context = function(config) {
 Ext.extend(Redirections.combo.Context, MODx.combo.ComboBox);
 
 Ext.reg('redirections-combo-context', Redirections.combo.Context);
+
+Redirections.combo.RedirectActive = function(config) {
+    config = config || {};
+    
+    Ext.applyIf(config, {
+        store: new Ext.data.ArrayStore({
+            mode	: 'local',
+            fields	: ['active','label'],
+            data	: [
+                [1, _('yes')],
+               	[0, _('no')]
+            ]
+        }),
+        remoteSort	: ['label', 'asc'],
+        hiddenName	: 'active',
+        valueField	: 'active',
+        displayField: 'label',
+        mode		: 'local'
+    });
+    
+    Redirections.combo.RedirectActive.superclass.constructor.call(this,config);
+};
+
+Ext.extend(Redirections.combo.RedirectActive, MODx.combo.ComboBox);
+
+Ext.reg('redirections-combo-xactive', Redirections.combo.RedirectActive);
 
 Redirections.combo.RedirectTypes = function(config) {
     config = config || {};
@@ -407,29 +450,3 @@ Redirections.combo.RedirectTypes = function(config) {
 Ext.extend(Redirections.combo.RedirectTypes, MODx.combo.ComboBox);
 
 Ext.reg('redirections-combo-xtype', Redirections.combo.RedirectTypes);
-
-Redirections.combo.RedirectActive = function(config) {
-    config = config || {};
-    
-    Ext.applyIf(config, {
-        store: new Ext.data.ArrayStore({
-            mode	: 'local',
-            fields	: ['active','label'],
-            data	: [
-                [1, _('yes')],
-               	[0, _('no')]
-            ]
-        }),
-        remoteSort	: ['label', 'asc'],
-        hiddenName	: 'active',
-        valueField	: 'active',
-        displayField: 'label',
-        mode		: 'local'
-    });
-    
-    Redirections.combo.RedirectActive.superclass.constructor.call(this,config);
-};
-
-Ext.extend(Redirections.combo.RedirectActive, MODx.combo.ComboBox);
-
-Ext.reg('redirections-combo-xactive', Redirections.combo.RedirectActive);

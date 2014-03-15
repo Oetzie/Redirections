@@ -26,7 +26,7 @@
 	$_lang['redirections.desc'] 							= 'Change or create site-wide redirects';
 	$_lang['redirections.redirect']							= 'Redirect';
 	$_lang['redirections.redirects']						= 'Redirects';
-	$_lang['redirections.redirects_desc']					= 'Here you can set redirect for the MODX site. A redirect is meant to redirect an old page to the new location, for example links that locate to your site from other sites. Dead links, especially those from Google, are bad for your SEO. For a wildcard in the old URL use % and as new URL can you use a resource alias or [[~ID]].';
+	$_lang['redirections.redirects_desc']					= 'Here you can set redirects for the MODX site. A redirect is meant to redirect an old page to the new location, for example links that locate to your site from other sites. Dead links, especially those from Google, are bad for your SEO. For a wildcard in the old URL use % and as new URL can you use a resource alias or [[~ID]].';
 	$_lang['redirections.redirect_create']					= 'Create new redirect';
 	$_lang['redirections.redirect_update']					= 'Update redirect';
 	$_lang['redirections.redirect_remove']					= 'Delete redirect';
@@ -42,5 +42,7 @@
 	$_lang['redirections.type_desc']						= 'The type of the redirect.';
 	$_lang['redirections.active']							= 'Active';
 	$_lang['redirections.active_desc']						= '';
+	
+	$_lang['redirections.filter_context']						= 'Filter on context...';
 	
 ?>
