@@ -53,7 +53,7 @@ Redirections.grid.Redirects = function(config) {
 
     this.cm = new Ext.grid.ColumnModel({
         columns: [{
-            header		: _('redirections.old'),
+            header		: _('redirections.label_old'),
             dataIndex	: 'old',
             sortable	: true,
             editable	: true,
@@ -62,7 +62,7 @@ Redirections.grid.Redirects = function(config) {
             	xtype		: 'textfield'
             }
         }, {
-            header		: _('redirections.new'),
+            header		: _('redirections.label_new'),
             dataIndex	: 'new',
             sortable	: true,
             editable	: true,
@@ -72,7 +72,7 @@ Redirections.grid.Redirects = function(config) {
             	xtype		: 'textfield'
             }
         }, {
-            header		: _('redirections.type'),
+            header		: _('redirections.label_type'),
             dataIndex	: 'type',
             sortable	: true,
             editable	: true,
@@ -82,7 +82,7 @@ Redirections.grid.Redirects = function(config) {
             	xtype		: 'redirections-combo-xtype'
             }
         }, {
-            header		: _('redirections.active'),
+            header		: _('redirections.label_active'),
             dataIndex	: 'active',
             sortable	: true,
             editable	: true,
@@ -226,59 +226,59 @@ Redirections.window.CreateRedirect = function(config) {
         },
         fields		: [{
         	xtype		: 'textfield',
-        	fieldLabel	: _('redirections.old'),
-        	description	: MODx.expandHelp ? '' : _('redirections.old_desc'),
+        	fieldLabel	: _('redirections.label_old'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_old_desc'),
         	name		: 'old',
         	anchor		: '100%',
         	allowBlank	: false,
         	maxLength	: 75
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.old_desc'),
+            html		: _('redirections.label_old_desc'),
             cls			: 'desc-under'
         }, {
 	        xtype		: 'textfield',
-            fieldLabel	: _('redirections.new'),
-            description	: MODx.expandHelp ? '' : _('redirections.new_desc'),
+            fieldLabel	: _('redirections.label_new'),
+            description	: MODx.expandHelp ? '' : _('redirections.label_new_desc'),
             name		: 'new',
             anchor		: '100%',
             allowBlank	: false
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.new_desc'),
+            html		: _('redirections.label_new_desc'),
             cls			: 'desc-under'
         }, {
         	xtype		: 'redirections-combo-context',
-        	fieldLabel	: _('redirections.context'),
-        	description	: MODx.expandHelp ? '' : _('redirections.context_desc'),
+        	fieldLabel	: _('redirections.label_context'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
         	name		: 'context',
         	anchor		: '100%',
         	allowBlank	: false,
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-        	html		: _('redirections.context_desc'),
+        	html		: _('redirections.label_context_desc'),
         	cls			: 'desc-under'
         }, {
         	xtype		: 'redirections-combo-xtype',
-        	fieldLabel	: _('redirections.type'),
-        	description	: MODx.expandHelp ? '' : _('redirections.type_desc'),
+        	fieldLabel	: _('redirections.label_type'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
         	name		: 'type',
         	anchor		: '100%',
         	allowBlank	: false,
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-        	html		: _('redirections.type_desc'),
+        	html		: _('redirections.label_type_desc'),
         	cls			: 'desc-under'
         }, {
 	        xtype		: 'checkbox',
-            fieldLabel	: _('redirections.active'),
-            description	: MODx.expandHelp ? '' : _('redirections.active_desc'),
+            fieldLabel	: _('redirections.label_active'),
+            description	: MODx.expandHelp ? '' : _('redirections.label_active_desc'),
             name		: 'active',
             inputValue	: 1,
             checked		: true
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.active_desc'),
+            html		: _('redirections.label_active_desc'),
             cls			: 'desc-under'
         }]
     });
@@ -304,58 +304,58 @@ Redirections.window.UpdateRedirect = function(config) {
             name		: 'id'
         }, {
         	xtype		: 'textfield',
-        	fieldLabel	: _('redirections.new'),
-        	description	: MODx.expandHelp ? '' : _('redirections.new_desc'),
+        	fieldLabel	: _('redirections.label_new'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_new_desc'),
         	name		: 'new',
         	anchor		: '100%',
         	allowBlank	: false,
         	maxLength	: 75
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.new_desc'),
+            html		: _('redirections.label_new_desc'),
             cls			: 'desc-under'
         }, {
 	        xtype		: 'textfield',
-            fieldLabel	: _('redirections.old'),
-            description	: MODx.expandHelp ? '' : _('redirections.old_desc'),
+            fieldLabel	: _('redirections.label_old'),
+            description	: MODx.expandHelp ? '' : _('redirections.label_old_desc'),
             name		: 'old',
             anchor		: '100%',
             allowBlank	: false
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.old_desc'),
+            html		: _('redirections.label_old_desc'),
             cls			: 'desc-under'
         }, {
         	xtype		: 'redirections-combo-context',
-        	fieldLabel	: _('redirections.context'),
-        	description	: MODx.expandHelp ? '' : _('redirections.context_desc'),
+        	fieldLabel	: _('redirections.label_context'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
         	name		: 'context',
         	anchor		: '100%',
         	allowBlank	: false,
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-        	html		: _('redirections.context_desc'),
+        	html		: _('redirections.label_context_desc'),
         	cls			: 'desc-under'
         }, {
         	xtype		: 'redirections-combo-xtype',
-        	fieldLabel	: _('redirections.type'),
-        	description	: MODx.expandHelp ? '' : _('redirections.type_desc'),
+        	fieldLabel	: _('redirections.label_type'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
         	name		: 'type',
         	anchor		: '100%',
         	allowBlank	: false,
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-        	html		: _('redirections.type_desc'),
+        	html		: _('redirections.label_type_desc'),
         	cls			: 'desc-under'
         }, {
 	        xtype		: 'checkbox',
-            fieldLabel	: _('redirections.active'),
-            description	: MODx.expandHelp ? '' : _('redirections.active_desc'),
+            fieldLabel	: _('redirections.label_active'),
+            description	: MODx.expandHelp ? '' : _('redirections.label_active_desc'),
             name		: 'active',
             inputValue	: 1
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.active_desc'),
+            html		: _('redirections.label_active_desc'),
             cls			: 'desc-under'
         }]
     });
