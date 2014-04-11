@@ -100,7 +100,7 @@ Redirections.grid.Redirects = function(config) {
             fixed		: true,
 			width		: 200
         }, {
-            header		: _('redirections.context'),
+            header		: _('context'),
             dataIndex	: 'context',
             sortable	: true,
             hidden		: true,
@@ -207,9 +207,9 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
     	});
     },
     renderActive: function(d, c) {
-    	c.css = ('1' == d || 1 == d) ? 'green' : 'red';
+    	c.css = 1 == parseInt(d) ? 'green' : 'red';
     	
-    	return ('1' == d || 1 == d) ? _('yes') : _('no');
+    	return 1 == parseInt(d) ? _('yes') : _('no');
     }
 });
 
@@ -248,27 +248,45 @@ Redirections.window.CreateRedirect = function(config) {
             html		: _('redirections.label_new_desc'),
             cls			: 'desc-under'
         }, {
-        	xtype		: 'redirections-combo-context',
-        	fieldLabel	: _('redirections.label_context'),
-        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
-        	name		: 'context',
-        	anchor		: '100%',
-        	allowBlank	: false,
-        }, {
-        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-        	html		: _('redirections.label_context_desc'),
-        	cls			: 'desc-under'
-        }, {
-        	xtype		: 'redirections-combo-xtype',
-        	fieldLabel	: _('redirections.label_type'),
-        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
-        	name		: 'type',
-        	anchor		: '100%',
-        	allowBlank	: false,
-        }, {
-        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-        	html		: _('redirections.label_type_desc'),
-        	cls			: 'desc-under'
+        	layout		: 'column',
+        	border		: false,
+            defaults	: {
+                layout		: 'form',
+                labelAlign	: 'top',
+                labelSeparator : '',
+                anchor		: '100%',
+                border		: false
+            },
+        	items		: [{
+	        	columnWidth	: .5,
+	        	items		: [{
+		        	xtype		: 'redirections-combo-context',
+		        	fieldLabel	: _('redirections.label_context'),
+		        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
+		        	name		: 'context',
+		        	anchor		: '100%',
+		        	allowBlank	: false,
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		        	html		: _('redirections.label_context_desc'),
+		        	cls			: 'desc-under'
+		        }]
+	        }, {
+		        columnWidth	: .5,
+		        style		: 'margin-right: 0;',
+	        	items		: [{
+		        	xtype		: 'redirections-combo-xtype',
+		        	fieldLabel	: _('redirections.label_type'),
+		        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
+		        	name		: 'type',
+		        	anchor		: '100%',
+		        	allowBlank	: false,
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		        	html		: _('redirections.label_type_desc'),
+		        	cls			: 'desc-under'
+		        }]
+	        }]
         }, {
 	        xtype		: 'checkbox',
             fieldLabel	: _('redirections.label_active'),
@@ -326,27 +344,45 @@ Redirections.window.UpdateRedirect = function(config) {
             html		: _('redirections.label_old_desc'),
             cls			: 'desc-under'
         }, {
-        	xtype		: 'redirections-combo-context',
-        	fieldLabel	: _('redirections.label_context'),
-        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
-        	name		: 'context',
-        	anchor		: '100%',
-        	allowBlank	: false,
-        }, {
-        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-        	html		: _('redirections.label_context_desc'),
-        	cls			: 'desc-under'
-        }, {
-        	xtype		: 'redirections-combo-xtype',
-        	fieldLabel	: _('redirections.label_type'),
-        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
-        	name		: 'type',
-        	anchor		: '100%',
-        	allowBlank	: false,
-        }, {
-        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-        	html		: _('redirections.label_type_desc'),
-        	cls			: 'desc-under'
+        	layout		: 'column',
+        	border		: false,
+            defaults	: {
+                layout		: 'form',
+                labelAlign	: 'top',
+                labelSeparator : '',
+                anchor		: '100%',
+                border		: false
+            },
+        	items		: [{
+	        	columnWidth	: .5,
+	        	items		: [{
+		        	xtype		: 'redirections-combo-context',
+		        	fieldLabel	: _('redirections.label_context'),
+		        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
+		        	name		: 'context',
+		        	anchor		: '100%',
+		        	allowBlank	: false,
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		        	html		: _('redirections.label_context_desc'),
+		        	cls			: 'desc-under'
+		        }]
+	        }, {
+		        columnWidth	: .5,
+		        style		: 'margin-right: 0;',
+	        	items		: [{
+		        	xtype		: 'redirections-combo-xtype',
+		        	fieldLabel	: _('redirections.label_type'),
+		        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
+		        	name		: 'type',
+		        	anchor		: '100%',
+		        	allowBlank	: false,
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		        	html		: _('redirections.label_type_desc'),
+		        	cls			: 'desc-under'
+		        }]
+	        }]
         }, {
 	        xtype		: 'checkbox',
             fieldLabel	: _('redirections.label_active'),
