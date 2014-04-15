@@ -3,6 +3,13 @@ Redirections
 ----------------------
 
 ----------------------
+Version: 1.0.2-pl
+Released: 2014-04-14
+----------------------
+- Bether and default Extjs comboboxes
+- Faster
+
+----------------------
 Version: 1.0.1-pl
 Released: 2014-03-09
 ----------------------

@@ -40,7 +40,7 @@
 	$_lang['redirections.label_new']						= 'Nieuwe URL';
 	$_lang['redirections.label_new_desc']					= 'De nieuwe URL waar de verwijzing heen moet verwijzen.';
 	$_lang['redirections.label_context']					= 'Context';
-	$_lang['redirections.label_context_desc']				= 'De context waarvoor de verwijzing geldig is.';
+	$_lang['redirections.label_context_desc']				= 'De context van de verwijzing.';
 	$_lang['redirections.label_type']						= 'Verwijzings type';
 	$_lang['redirections.label_type_desc']					= 'De type van de verwijzing.';
 	$_lang['redirections.label_active']						= 'Actief';

@@ -4,10 +4,8 @@ Redirections.grid.Redirects = function(config) {
 	config.tbar = [{
         text	: _('redirections.redirect_create'),
         handler	: this.createRedirect
-   }];
-    
-    config.tbar.push('->', {
-    	xtype		: 'redirections-combo-context',
+   }, '->', {
+    	xtype		: 'modx-combo-context',
     	name		: 'redirections-filter-context',
         id			: 'redirections-filter-context',
         emptyText	: _('redirections.filter_context'),
@@ -20,8 +18,8 @@ Redirections.grid.Redirects = function(config) {
 		width: 250
     }, '-', {
         xtype		: 'textfield',
-        name 		: 'redirects-filter-search',
-        id			: 'redirects-filter-search',
+        name 		: 'redirections-filter-search',
+        id			: 'redirections-filter-search',
         emptyText	: _('search')+'...',
         listeners	: {
 	        'change'	: {
@@ -41,7 +39,7 @@ Redirections.grid.Redirects = function(config) {
         }
     }, {
     	xtype	: 'button',
-    	id		: 'redirects-filter-clear',
+    	id		: 'redirections-filter-clear',
     	text	: _('filter_clear'),
     	listeners: {
         	'click': {
@@ -49,9 +47,9 @@ Redirections.grid.Redirects = function(config) {
         		scope	: this
         	}
         }
-    });
+    }];
 
-    this.cm = new Ext.grid.ColumnModel({
+    columns = new Ext.grid.ColumnModel({
         columns: [{
             header		: _('redirections.label_old'),
             dataIndex	: 'old',
@@ -90,7 +88,7 @@ Redirections.grid.Redirects = function(config) {
             fixed		: true,
 			renderer	: this.renderActive,
 			editor		: {
-            	xtype		: 'redirections-combo-xactive'
+            	xtype		: 'modx-combo-boolean'
             }
         }, {
             header		: _('last_modified'),
@@ -109,7 +107,7 @@ Redirections.grid.Redirects = function(config) {
     });
     
     Ext.applyIf(config, {
-    	cm			: this.cm,
+    	cm			: columns,
         id			: 'redirections-grid-redirects',
         url			: Redirections.config.connectorUrl,
         baseParams	: {
@@ -139,7 +137,9 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         this.getBottomToolbar().changePage(1);
     },
     clearFilter: function() {
+    	this.getStore().baseParams.context = '';
 	    this.getStore().baseParams.query = '';
+	    Ext.getCmp('redirections-filter-context').reset();
 	    Ext.getCmp('redirections-filter-search').reset();
         this.getBottomToolbar().changePage(1);
     },
@@ -159,6 +159,7 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         
         this.createRedirectWindow = MODx.load({
 	        xtype		: 'redirections-window-redirect-create',
+	        closeAction	:'close',
 	        listeners	: {
 		        'success'	: {
 		        	fn			:this.refresh,
@@ -178,6 +179,7 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         this.updateRedirectWindow = MODx.load({
 	        xtype		: 'redirections-window-redirect-update',
 	        record		: this.menu.record,
+	        closeAction	:'close',
 	        listeners	: {
 		        'success'	: {
 		        	fn			:this.refresh,
@@ -207,9 +209,9 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
     	});
     },
     renderActive: function(d, c) {
-    	c.css = 1 == parseInt(d) ? 'green' : 'red';
+    	c.css = 1 == parseInt(d) || d ? 'green' : 'red';
     	
-    	return 1 == parseInt(d) ? _('yes') : _('no');
+    	return 1 == parseInt(d) || d ? _('yes') : _('no');
     }
 });
 
@@ -224,25 +226,55 @@ Redirections.window.CreateRedirect = function(config) {
         baseParams	: {
             action		: 'mgr/create'
         },
+        defauls		: {
+	        labelAlign	: 'top',
+            border		: false
+        },
         fields		: [{
+        	layout		: 'column',
+        	border		: false,
+            defaults	: {
+                layout		: 'form',
+                labelSeparator : ''
+            },
+        	items		: [{
+	        	columnWidth	: .9,
+	        	items		: [{
+			        xtype		: 'textfield',
+		            fieldLabel	: _('redirections.label_old'),
+		            description	: MODx.expandHelp ? '' : _('redirections.label_old_desc'),
+		            name		: 'old',
+		            anchor		: '100%',
+		            allowBlank	: false
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		            html		: _('redirections.label_old_desc'),
+		            cls			: 'desc-under'
+		        }]
+	        }, {
+		        columnWidth	: .1,
+		        style		: 'margin-right: 0;',
+		        items		: [{
+			        xtype		: 'checkbox',
+		            fieldLabel	: _('redirections.label_active'),
+		            description	: MODx.expandHelp ? '' : _('redirections.label_active_desc'),
+		            name		: 'active',
+		            inputValue	: 1,
+		            checked		: true
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		            html		: _('redirections.label_active_desc'),
+		            cls			: 'desc-under'
+		        }]
+	        }]	
+	    }, {
         	xtype		: 'textfield',
-        	fieldLabel	: _('redirections.label_old'),
-        	description	: MODx.expandHelp ? '' : _('redirections.label_old_desc'),
-        	name		: 'old',
+        	fieldLabel	: _('redirections.label_new'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_new_desc'),
+        	name		: 'new',
         	anchor		: '100%',
         	allowBlank	: false,
         	maxLength	: 75
-        }, {
-        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.label_old_desc'),
-            cls			: 'desc-under'
-        }, {
-	        xtype		: 'textfield',
-            fieldLabel	: _('redirections.label_new'),
-            description	: MODx.expandHelp ? '' : _('redirections.label_new_desc'),
-            name		: 'new',
-            anchor		: '100%',
-            allowBlank	: false
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
             html		: _('redirections.label_new_desc'),
@@ -252,20 +284,18 @@ Redirections.window.CreateRedirect = function(config) {
         	border		: false,
             defaults	: {
                 layout		: 'form',
-                labelAlign	: 'top',
-                labelSeparator : '',
-                anchor		: '100%',
-                border		: false
+                labelSeparator : ''
             },
         	items		: [{
 	        	columnWidth	: .5,
 	        	items		: [{
-		        	xtype		: 'redirections-combo-context',
+		        	xtype		: 'modx-combo-context',
 		        	fieldLabel	: _('redirections.label_context'),
 		        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
 		        	name		: 'context',
 		        	anchor		: '100%',
 		        	allowBlank	: false,
+		        	value		: 'web'
 		        }, {
 		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
 		        	html		: _('redirections.label_context_desc'),
@@ -287,17 +317,6 @@ Redirections.window.CreateRedirect = function(config) {
 		        	cls			: 'desc-under'
 		        }]
 	        }]
-        }, {
-	        xtype		: 'checkbox',
-            fieldLabel	: _('redirections.label_active'),
-            description	: MODx.expandHelp ? '' : _('redirections.label_active_desc'),
-            name		: 'active',
-            inputValue	: 1,
-            checked		: true
-        }, {
-        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.label_active_desc'),
-            cls			: 'desc-under'
         }]
     });
     
@@ -317,10 +336,50 @@ Redirections.window.UpdateRedirect = function(config) {
         baseParams	: {
             action		: 'mgr/update'
         },
+        defauls		: {
+	        labelAlign	: 'top',
+            border		: false
+        },
         fields		: [{
             xtype		: 'hidden',
             name		: 'id'
         }, {
+        	layout		: 'column',
+        	border		: false,
+            defaults	: {
+                layout		: 'form',
+                labelSeparator : ''
+            },
+        	items		: [{
+	        	columnWidth	: .9,
+	        	items		: [{
+			        xtype		: 'textfield',
+		            fieldLabel	: _('redirections.label_old'),
+		            description	: MODx.expandHelp ? '' : _('redirections.label_old_desc'),
+		            name		: 'old',
+		            anchor		: '100%',
+		            allowBlank	: false
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		            html		: _('redirections.label_old_desc'),
+		            cls			: 'desc-under'
+		        }]
+	        }, {
+		        columnWidth	: .1,
+		        style		: 'margin-right: 0;',
+		        items		: [{
+			        xtype		: 'checkbox',
+		            fieldLabel	: _('redirections.label_active'),
+		            description	: MODx.expandHelp ? '' : _('redirections.label_active_desc'),
+		            name		: 'active',
+		            inputValue	: 1
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		            html		: _('redirections.label_active_desc'),
+		            cls			: 'desc-under'
+		        }]
+	        }]	
+	    }, {
         	xtype		: 'textfield',
         	fieldLabel	: _('redirections.label_new'),
         	description	: MODx.expandHelp ? '' : _('redirections.label_new_desc'),
@@ -333,35 +392,21 @@ Redirections.window.UpdateRedirect = function(config) {
             html		: _('redirections.label_new_desc'),
             cls			: 'desc-under'
         }, {
-	        xtype		: 'textfield',
-            fieldLabel	: _('redirections.label_old'),
-            description	: MODx.expandHelp ? '' : _('redirections.label_old_desc'),
-            name		: 'old',
-            anchor		: '100%',
-            allowBlank	: false
-        }, {
-        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.label_old_desc'),
-            cls			: 'desc-under'
-        }, {
         	layout		: 'column',
         	border		: false,
             defaults	: {
                 layout		: 'form',
-                labelAlign	: 'top',
-                labelSeparator : '',
-                anchor		: '100%',
-                border		: false
+                labelSeparator : ''
             },
         	items		: [{
 	        	columnWidth	: .5,
 	        	items		: [{
-		        	xtype		: 'redirections-combo-context',
+		        	xtype		: 'modx-combo-context',
 		        	fieldLabel	: _('redirections.label_context'),
 		        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
 		        	name		: 'context',
 		        	anchor		: '100%',
-		        	allowBlank	: false,
+		        	allowBlank	: false
 		        }, {
 		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
 		        	html		: _('redirections.label_context_desc'),
@@ -383,16 +428,6 @@ Redirections.window.UpdateRedirect = function(config) {
 		        	cls			: 'desc-under'
 		        }]
 	        }]
-        }, {
-	        xtype		: 'checkbox',
-            fieldLabel	: _('redirections.label_active'),
-            description	: MODx.expandHelp ? '' : _('redirections.label_active_desc'),
-            name		: 'active',
-            inputValue	: 1
-        }, {
-        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-            html		: _('redirections.label_active_desc'),
-            cls			: 'desc-under'
         }]
     });
     
@@ -402,62 +437,6 @@ Redirections.window.UpdateRedirect = function(config) {
 Ext.extend(Redirections.window.UpdateRedirect, MODx.Window);
 
 Ext.reg('redirections-window-redirect-update', Redirections.window.UpdateRedirect);
-
-Redirections.combo.Context = function(config) {
-    config = config || {};
-    
-    var contexts = [];
-    var _this = this;
-    
-    Ext.each(Redirections.config.contexts, function(context) {
-    	contexts.push([context.key]);
-    });
-    
-    Ext.applyIf(config, {
-        store: new Ext.data.ArrayStore({
-            mode	: 'local',
-            fields	: ['label'],
-            data	: contexts
-        }),
-        remoteSort	: ['label', 'asc'],
-        hiddenName	: 'context',
-        valueField	: 'label',
-        displayField: 'label',
-        mode		: 'local'
-    });
-    
-    Redirections.combo.Context.superclass.constructor.call(this,config);
-};
-
-Ext.extend(Redirections.combo.Context, MODx.combo.ComboBox);
-
-Ext.reg('redirections-combo-context', Redirections.combo.Context);
-
-Redirections.combo.RedirectActive = function(config) {
-    config = config || {};
-    
-    Ext.applyIf(config, {
-        store: new Ext.data.ArrayStore({
-            mode	: 'local',
-            fields	: ['active','label'],
-            data	: [
-                [1, _('yes')],
-               	[0, _('no')]
-            ]
-        }),
-        remoteSort	: ['label', 'asc'],
-        hiddenName	: 'active',
-        valueField	: 'active',
-        displayField: 'label',
-        mode		: 'local'
-    });
-    
-    Redirections.combo.RedirectActive.superclass.constructor.call(this,config);
-};
-
-Ext.extend(Redirections.combo.RedirectActive, MODx.combo.ComboBox);
-
-Ext.reg('redirections-combo-xactive', Redirections.combo.RedirectActive);
 
 Redirections.combo.RedirectTypes = function(config) {
     config = config || {};

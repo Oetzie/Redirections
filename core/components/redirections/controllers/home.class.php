@@ -25,18 +25,6 @@
 	class RedirectionsHomeManagerController extends RedirectionsManagerController {
 		/**
 		 * @acces public.
-		 * @param Array $scriptProperties.
-		 */
-		public function process(array $scriptProperties = array()) {
-			$this->addHtml('<script type="text/javascript">
-				Ext.onReady(function() {
-					Redirections.config.contexts = '.$this->modx->toJSON($this->getContext()).';
-				});
-			</script>');
-		}
-		
-		/**
-		 * @acces public.
 		 */
 		public function loadCustomCssJs() {
 			$this->addJavascript($this->redirections->config['jsUrl'].'mgr/widgets/home.panel.js');
@@ -58,22 +46,6 @@
 		*/
 		public function getTemplateFile() {
 			return $this->redirections->config['templatesPath'].'home.tpl';
-		}
-		
-		/**
-		 * @acces protected.
-		 * @return Array.
-		 */
-		protected function getContext() {
-			$contexts = array();
-			
-			$query = $this->modx->newQuery('modContext', array('key:NOT IN' => array('mgr')));
-			
-			foreach ($this->modx->getCollection('modContext', $query) as $key => $context) {
-				$contexts[] = array('key' => $key);
-			}
-			
-			return $contexts;
 		}
 	}
 

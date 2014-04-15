@@ -48,19 +48,21 @@
 			$assetsPath 	= $this->modx->getOption('redirections.assets_path', $config, $this->modx->getOption('assets_path').'components/redirections/');
 		
 			$this->config = array_merge(array(
-				'basePath'			=> $corePath,
-				'corePath' 			=> $corePath,
-				'modelPath' 		=> $corePath.'model/',
-				'processorsPath' 	=> $corePath.'processors/',
-				'elementsPath' 		=> $corePath.'elements/',
-				'templatesPath' 	=> $corePath.'templates/',
-				'assetsPath' 		=> $assetsPath,
-				'jsUrl' 			=> $assetsUrl.'js/',
-				'cssUrl' 			=> $assetsUrl.'css/',
-				'assetsUrl' 		=> $assetsUrl,
-				'connectorUrl'		=> $assetsUrl.'connector.php',
-				'helpurl'			=> 'redirections'
-			), $config);
+				'basePath'				=> $corePath,
+				'corePath' 				=> $corePath,
+				'modelPath' 			=> $corePath.'model/',
+				'processorsPath' 		=> $corePath.'processors/',
+				'elementsPath' 			=> $corePath.'elements/',
+				'chunksPath' 			=> $corePath.'elements/chunks/',
+				'snippetsPath' 			=> $corePath.'elements/snippets/',
+				'templatesPath' 		=> $corePath.'templates/',
+				'assetsPath' 			=> $assetsPath,
+				'jsUrl' 				=> $assetsUrl.'js/',
+				'cssUrl' 				=> $assetsUrl.'css/',
+				'assetsUrl' 			=> $assetsUrl,
+				'connectorUrl'			=> $assetsUrl.'connector.php',
+				'helpurl'				=> 'redirections'
+			), $config);	
 		
 			$this->modx->addPackage('redirections', $this->config['modelPath']);
 		}
@@ -80,7 +82,10 @@
 		public function getRedirects() {
 			$redirects = array();
 			
-			$collection = $this->modx->getCollection('Redirects', array('context' => $this->modx->context->key, 'active' => 1));
+			$collection = $this->modx->getCollection('Redirects', array(
+				'context' 	=> $this->modx->context->key,
+				'active' 	=> 1
+			));
 			
 			foreach($collection as $key => $redirect) {
 				$redirects[$key] = $redirect->toArray();
