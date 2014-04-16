@@ -49,92 +49,132 @@
 	$category = $modx->newObject('modCategory');
 	$category->fromArray(array('id' => 1, 'category' => PKG_NAME), '', true, true);
 
-	if (null === $category) {
-		$modx->log(modX::LOG_LEVEL_ERROR, 'No category to pack.');
-	} else {
-		if (file_exists($sources['data'].'transport.plugins.php')) {	
-			$modx->log(modX::LOG_LEVEL_INFO, 'Packaging in plugin(s) into category...');
-		
-			$plugins = include $sources['data'].'transport.plugins.php';
-		
-			foreach ($plugins as $plugin) {
-				$category->addMany($plugin);
-			}
+	if (file_exists($sources['data'].'transport.snippets.php')) {	
+		$modx->log(modX::LOG_LEVEL_INFO, 'Packaging in snippet(s) into category...');
+	
+		$snippets = include $sources['data'].'transport.snippets.php';
+	
+		foreach ($snippets as $snippet) {
+			$category->addMany($snippet);
+		}
 
-			$modx->log(modX::LOG_LEVEL_INFO, 'Packed plugin(s) '.count($plugins).' into category.');
+		$modx->log(modX::LOG_LEVEL_INFO, 'Packed snippet(s) '.count($snippets).' into category.');
+	} else {
+		$modx->log(modX::LOG_LEVEL_INFO, 'No snippet(s) to pack...');
+	}
+	
+	if (file_exists($sources['data'].'transport.chunks.php')) {
+		$modx->log(modX::LOG_LEVEL_INFO, 'Packaging in chunk(s) into category...');
+		
+		$chunks = include $sources['data'].'transport.chunks.php';
+	
+		foreach ($chunks as $chunk) {
+			$category->addMany($chunk);
+		}
+		
+		$modx->log(modX::LOG_LEVEL_INFO, 'Packed chunk(s) '.count($chunks).' into category.');
+	} else {
+		$modx->log(modX::LOG_LEVEL_INFO, 'No chunk(s) to pack...');
+	}
+	
+	$builder->putVehicle($builder->createVehicle($category, array(
+	    xPDOTransport::UNIQUE_KEY 		=> 'category',
+	    xPDOTransport::PRESERVE_KEYS 	=> false,
+	    xPDOTransport::UPDATE_OBJECT 	=> true,
+	    xPDOTransport::RELATED_OBJECTS 	=> true,
+	    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array(
+	        'Plugins' => array(
+	            xPDOTransport::PRESERVE_KEYS 	=> false,
+	            xPDOTransport::UPDATE_OBJECT 	=> true,
+	            xPDOTransport::UNIQUE_KEY 		=> 'name'
+	        ),
+	        'PluginEvents' => array(
+	            xPDOTransport::PRESERVE_KEYS 	=> true,
+	            xPDOTransport::UPDATE_OBJECT 	=> false,
+	            xPDOTransport::UNIQUE_KEY 		=> array('pluginid', 'event'),
+	        ),
+	        'Snippets' => array(
+	            xPDOTransport::PRESERVE_KEYS 	=> false,
+	            xPDOTransport::UPDATE_OBJECT 	=> true,
+	            xPDOTransport::UNIQUE_KEY 		=> 'name'
+	        ),
+	        'Chunks' => array(
+	            xPDOTransport::PRESERVE_KEYS 	=> false,
+	            xPDOTransport::UPDATE_OBJECT 	=> true,
+	            xPDOTransport::UNIQUE_KEY 		=> 'name'
+	        )
+	    )
+	)));
+	
+	if (file_exists($sources['data'].'transport.settings.php')) {
+		$settings = include $sources['data'].'transport.settings.php';
+		
+		$modx->log(modX::LOG_LEVEL_INFO, 'Packaging in systemsetting(s) into category...');
+		
+		foreach ($settings as $key => $value) {
+			$builder->putVehicle($builder->createVehicle($value, array(
+				xPDOTransport::UNIQUE_KEY => 'key',
+				xPDOTransport::PRESERVE_KEYS => true,
+				xPDOTransport::UPDATE_OBJECT => false
+			)));
+		}
+		
+		$modx->log(modX::LOG_LEVEL_INFO, 'Packed systemsetting(s) '.count($settings).' into category.');
+	} else {
+		$modx->log(modX::LOG_LEVEL_INFO, 'No systemsetting(s) to pack...');
+	}
+
+	$modx->log(modX::LOG_LEVEL_INFO, 'Packed category.');
+	
+	if (file_exists($sources['data'].'transport.menu.php')) {
+		$menu = include $sources['data'].'transport.menu.php';
+		
+		$modx->log(modX::LOG_LEVEL_INFO, 'Packaging in menu...');
+		
+		if (null === $menu) {
+			$modx->log(modX::LOG_LEVEL_ERROR, 'No menu to pack.');
 		} else {
-			$modx->log(modX::LOG_LEVEL_INFO, 'No plugins(s) to pack...');
-		}
-		
-		$builder->putVehicle($builder->createVehicle($category, array(
-		    xPDOTransport::UNIQUE_KEY 		=> 'category',
-		    xPDOTransport::PRESERVE_KEYS 	=> false,
-		    xPDOTransport::UPDATE_OBJECT 	=> true,
-		    xPDOTransport::RELATED_OBJECTS 	=> true,
-		    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array(
-		        'Plugins' => array(
-		            xPDOTransport::PRESERVE_KEYS 	=> false,
-		            xPDOTransport::UPDATE_OBJECT 	=> true,
-		            xPDOTransport::UNIQUE_KEY 		=> 'name'
-		        ),
-		        'PluginEvents' => array(
-		            xPDOTransport::PRESERVE_KEYS 	=> true,
-		            xPDOTransport::UPDATE_OBJECT 	=> false,
-		            xPDOTransport::UNIQUE_KEY 		=> array('pluginid', 'event'),
-		        )
-		    )
-		)));
-
-		$modx->log(modX::LOG_LEVEL_INFO, 'Packed category.');
-	}
-	
-	$modx->log(modX::LOG_LEVEL_INFO, 'Packaging in menu...');
-	
-	$menu = include $sources['data'].'transport.menu.php';
-	
-	if (null === $menu) {
-		$modx->log(modX::LOG_LEVEL_ERROR, 'No menu to pack.');
-	} else {
-		$vehicle = $builder->createVehicle($menu, array(
-		    xPDOTransport::PRESERVE_KEYS 	=> true,
-		    xPDOTransport::UPDATE_OBJECT 	=> true,
-		    xPDOTransport::UNIQUE_KEY 		=> 'text',
-		    xPDOTransport::RELATED_OBJECTS 	=> true,
-		    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array(
-		        'Action' => array(
-		            xPDOTransport::PRESERVE_KEYS 	=> false,
-		            xPDOTransport::UPDATE_OBJECT 	=> true,
-		            xPDOTransport::UNIQUE_KEY 		=> array('namespace','controller')
-		        ),
-		    ),
-		));
-		
-		$modx->log(modX::LOG_LEVEL_INFO, 'Adding in PHP resolvers...');
-		
-		if (is_dir($sources['assets'])) {
-			$vehicle->resolve('file', array(
-		    	'source' => $sources['assets'],
-		    	'target' => "return MODX_ASSETS_PATH.'components/';",
-		    ));
-		}
-		
-	    if (is_dir($sources['core'])) {
-			$vehicle->resolve('file', array(
-			    'source' => $sources['core'],
-			    'target' => "return MODX_CORE_PATH.'components/';",
+			$vehicle = $builder->createVehicle($menu, array(
+			    xPDOTransport::PRESERVE_KEYS 	=> true,
+			    xPDOTransport::UPDATE_OBJECT 	=> true,
+			    xPDOTransport::UNIQUE_KEY 		=> 'text',
+			    xPDOTransport::RELATED_OBJECTS 	=> true,
+			    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array(
+			        'Action' => array(
+			            xPDOTransport::PRESERVE_KEYS 	=> false,
+			            xPDOTransport::UPDATE_OBJECT 	=> true,
+			            xPDOTransport::UNIQUE_KEY 		=> array('namespace','controller')
+			        ),
+			    ),
 			));
+			
+			$modx->log(modX::LOG_LEVEL_INFO, 'Adding in PHP resolvers...');
+			
+			if (is_dir($sources['assets'])) {
+				$vehicle->resolve('file', array(
+			    	'source' => $sources['assets'],
+			    	'target' => "return MODX_ASSETS_PATH.'components/';",
+			    ));
+			}
+			
+		    if (is_dir($sources['core'])) {
+				$vehicle->resolve('file', array(
+				    'source' => $sources['core'],
+				    'target' => "return MODX_CORE_PATH.'components/';",
+				));
+			}
+			
+			if (file_exists($sources['resolvers'].'resolve.tables.php')) {
+				$vehicle->resolve('php',array(
+			    	'source' => $sources['resolvers'].'resolve.tables.php',
+				));
+			}
+			
+			$builder->putVehicle($vehicle);
+			
+			$modx->log(modX::LOG_LEVEL_INFO, 'Packed menu.');
 		}
-		
-		if (file_exists($sources['resolvers'].'resolve.tables.php')) {
-			$vehicle->resolve('php',array(
-		    	'source' => $sources['resolvers'].'resolve.tables.php',
-			));
-		}
-		
-		$builder->putVehicle($vehicle);
-		
-		$modx->log(modX::LOG_LEVEL_INFO, 'Packed menu.');
-	}
+	}	
 	
 	$modx->log(xPDO::LOG_LEVEL_INFO, 'Setting Package Attributes...');
 
