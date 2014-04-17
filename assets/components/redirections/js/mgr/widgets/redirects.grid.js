@@ -118,6 +118,7 @@ Redirections.grid.Redirects = function(config) {
         fields		: ['id', 'context', 'old', 'new', 'type', 'active', 'editedon'],
         paging		: true,
         pageSize	: MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
+        sortBy		: 'id',
         grouping	: true,
         groupBy		: 'context',
         singleText	: _('redirections.redirect'),
@@ -287,7 +288,22 @@ Redirections.window.CreateRedirect = function(config) {
                 labelSeparator : ''
             },
         	items		: [{
+		        columnWidth	: .5,
+	        	items		: [{
+		        	xtype		: 'redirections-combo-xtype',
+		        	fieldLabel	: _('redirections.label_type'),
+		        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
+		        	name		: 'type',
+		        	anchor		: '100%',
+		        	allowBlank	: false,
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		        	html		: _('redirections.label_type_desc'),
+		        	cls			: 'desc-under'
+		        }]
+	        }, {
 	        	columnWidth	: .5,
+	        	style		: 'margin-right: 0;',
 	        	items		: [{
 		        	xtype		: 'modx-combo-context',
 		        	fieldLabel	: _('redirections.label_context'),
@@ -299,21 +315,6 @@ Redirections.window.CreateRedirect = function(config) {
 		        }, {
 		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
 		        	html		: _('redirections.label_context_desc'),
-		        	cls			: 'desc-under'
-		        }]
-	        }, {
-		        columnWidth	: .5,
-		        style		: 'margin-right: 0;',
-	        	items		: [{
-		        	xtype		: 'redirections-combo-xtype',
-		        	fieldLabel	: _('redirections.label_type'),
-		        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
-		        	name		: 'type',
-		        	anchor		: '100%',
-		        	allowBlank	: false,
-		        }, {
-		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-		        	html		: _('redirections.label_type_desc'),
 		        	cls			: 'desc-under'
 		        }]
 	        }]
@@ -401,21 +402,6 @@ Redirections.window.UpdateRedirect = function(config) {
         	items		: [{
 	        	columnWidth	: .5,
 	        	items		: [{
-		        	xtype		: 'modx-combo-context',
-		        	fieldLabel	: _('redirections.label_context'),
-		        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
-		        	name		: 'context',
-		        	anchor		: '100%',
-		        	allowBlank	: false
-		        }, {
-		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-		        	html		: _('redirections.label_context_desc'),
-		        	cls			: 'desc-under'
-		        }]
-	        }, {
-		        columnWidth	: .5,
-		        style		: 'margin-right: 0;',
-	        	items		: [{
 		        	xtype		: 'redirections-combo-xtype',
 		        	fieldLabel	: _('redirections.label_type'),
 		        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
@@ -425,6 +411,21 @@ Redirections.window.UpdateRedirect = function(config) {
 		        }, {
 		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
 		        	html		: _('redirections.label_type_desc'),
+		        	cls			: 'desc-under'
+		        }]
+	        }, {
+		        columnWidth	: .5,
+		        style		: 'margin-right: 0;',
+	        	items		: [{
+		        	xtype		: 'modx-combo-context',
+		        	fieldLabel	: _('redirections.label_context'),
+		        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
+		        	name		: 'context',
+		        	anchor		: '100%',
+		        	allowBlank	: false
+		        }, {
+		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+		        	html		: _('redirections.label_context_desc'),
 		        	cls			: 'desc-under'
 		        }]
 	        }]
