@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model package="redirections" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" version="1.0">
-    <object class="Redirects" table="redirections_redirects" extends="xPDOSimpleObject">
+    <object class="RedirectionsRedirects" table="redirections_redirects" extends="xPDOSimpleObject">
     	<field key="id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native"/>
     	<field key="context" dbtype="varchar" precision="75" phptype="string" null="false" default=""/>
         <field key="old" dbtype="text" precision="2048" phptype="string" null="false" default=""/>

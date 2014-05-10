@@ -27,7 +27,7 @@
 		 * @acces public.
 		 * @var String.
 		 */
-		public $classKey = 'Redirects';
+		public $classKey = 'RedirectionsRedirects';
 		
 		/**
 		 * @acces public.

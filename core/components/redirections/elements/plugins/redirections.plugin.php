@@ -1,5 +1,4 @@
 <?php
-
 	/**
 	 * Redirections
 	 *
@@ -38,12 +37,19 @@
 			$request = trim($request, '/');
 
 			if (!empty($request)) {
-				foreach ($redirections->getRedirects() as $redirect) {
-					if (preg_match('/^'.str_replace('%', '(.+?)', preg_quote(ltrim($redirect['old'], '/'), '/')).'$/i', $request)) {
+				foreach (array_reverse($redirections->getRedirects()) as $key => $redirect) {
+					$regex = preg_quote(ltrim($redirect['old'], '/'));
+					$regex = str_replace(array('%', '\?', '\^', '\$', '/'), array('(.+?)', '?', '^', '$', '\/'), $regex);
+					$regex = !preg_match('/\^/si', $regex) && !preg_match('/\$/si', $regex) ? sprintf('/^%s$/si', $regex) : sprintf('/%s/si', $regex);
 
-						if (preg_match('/^(\[\[\~([0-9]+)\]\])$/', $redirect['new'], $matches)) {
-							if (isset($matches[2])) {
-								$redirect['new'] = $modx->makeUrl($matches[2]);
+					if (preg_match($regex, $request, $matches)) {
+						foreach ($matches as $key => $value) {
+							$redirect['new'] = str_replace(sprintf('$%s', $key), $value, $redirect['new']);
+						}
+
+						if (preg_match('/(\[\[\~([0-9]+)\]\])/si', $redirect['new'], $matches)) {
+							if (array_key_exists('2', $matches)) {
+								$redirect['new'] = str_replace($matches[1], $modx->makeUrl($matches[2]), $redirect['new']);
 							}
 						}
 
@@ -68,4 +74,5 @@
 	}
 	
 	return;
+	
 ?>

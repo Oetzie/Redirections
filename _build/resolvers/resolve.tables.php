@@ -8,7 +8,7 @@
 	
 	            $manager = $modx->getManager();
 	
-	            $manager->createObjectContainer('Redirects');
+	            $manager->createObjectContainer('RedirectionsRedirects');
 	
 	            break;
 	        case xPDOTransport::ACTION_UPGRADE:

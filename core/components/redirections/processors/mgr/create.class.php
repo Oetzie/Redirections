@@ -27,7 +27,7 @@
 		 * @acces public.
 		 * @var String.
 		 */
-		public $classKey = 'Redirects';
+		public $classKey = 'RedirectionsRedirects';
 		
 		/**
 		 * @acces public.
@@ -40,6 +40,18 @@
 		 * @var String.
 		 */
 		public $objectType = 'redirections.redirects';
+		
+		/**
+		 * @acces public.
+		 * @return Mixed.
+		 */
+		public function initialize() {
+			if (null === $this->getProperty('active')) {
+				$this->setProperty('active', 0);
+			}
+
+			return parent::initialize();
+		}
 	}
 	
 	return 'RedirectionsCreateProcessor';

@@ -24,7 +24,7 @@
 
 	$xpdo_meta_map = array(
 		'xPDOSimpleObject' => array(
-	    	0 => 'Redirects'
+	    	0 => 'RedirectionsRedirects'
 	    )
 	);
 	

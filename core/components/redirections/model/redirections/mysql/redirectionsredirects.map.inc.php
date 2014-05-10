@@ -22,7 +22,7 @@
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
 
-	$xpdo_meta_map['Redirects']= array(
+	$xpdo_meta_map['RedirectionsRedirects']= array(
 		'package' 	=> 'redirections',
 		'version' 	=> '1.0',
 		'table' 	=> 'redirections_redirects',

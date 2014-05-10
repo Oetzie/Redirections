@@ -3,6 +3,13 @@ Redirections
 ----------------------
 
 ----------------------
+Version: 1.0.3-pl
+Released: 2014-05-10
+----------------------
+- New redirection plugin with more regex functions like wildcard, ranges etc.
+- Bugfixed with activate a redirect.
+
+----------------------
 Version: 1.0.2-pl
 Released: 2014-04-14
 ----------------------

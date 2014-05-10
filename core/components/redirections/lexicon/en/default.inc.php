@@ -29,7 +29,7 @@
 	
 	$_lang['redirections.redirect']							= 'Redirect';
 	$_lang['redirections.redirects']						= 'Redirects';
-	$_lang['redirections.redirects_desc']					= 'Here you can set redirects for the MODX site. A redirect is meant to redirect an old page to the new location, for example links that locate to your site from other sites. Dead links, especially those from Google, are bad for your SEO. For a wildcard in the old URL use % and as new URL can you use a resource alias or [[~ID]].';
+	$_lang['redirections.redirects_desc']					= 'Here you can set redirects for the MODX site. A redirect is meant to redirect an old page to the new location, for example links that locate to your site from other sites. Dead links, especially those from Google, are bad for your SEO. For a wildcard in the old URL use % (you can pass the wildcard to the new URL with $NUMBER_WILDCARD), use ^ to start an URL range (ex. ^nieuws) or use $ to end an URL range (ex. news$). As new URL can you use [[~ID]] or a textual URL.';
 	$_lang['redirections.redirect_create']					= 'Create new redirect';
 	$_lang['redirections.redirect_update']					= 'Update redirect';
 	$_lang['redirections.redirect_remove']					= 'Delete redirect';

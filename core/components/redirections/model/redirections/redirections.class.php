@@ -81,14 +81,9 @@
 		 */
 		public function getRedirects() {
 			$redirects = array();
-			
-			$collection = $this->modx->getCollection('Redirects', array(
-				'context' 	=> $this->modx->context->key,
-				'active' 	=> 1
-			));
-			
-			foreach($collection as $key => $redirect) {
-				$redirects[$key] = $redirect->toArray();
+	
+			foreach($this->modx->getCollection('RedirectionsRedirects', array('context' => $this->modx->context->key, 'active' => 1)) as $key => $value) {
+				$redirects[] = $value->toArray();
 			}
 			
 			return $redirects;
