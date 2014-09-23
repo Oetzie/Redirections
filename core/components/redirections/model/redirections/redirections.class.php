@@ -61,7 +61,8 @@
 				'cssUrl' 				=> $assetsUrl.'css/',
 				'assetsUrl' 			=> $assetsUrl,
 				'connectorUrl'			=> $assetsUrl.'connector.php',
-				'helpurl'				=> 'redirections'
+				'helpurl'				=> 'redirections',
+				'context'				=> 2 == $this->modx->getCount('modContext') ? 0 : 1
 			), $config);	
 		
 			$this->modx->addPackage('redirections', $this->config['modelPath']);

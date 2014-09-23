@@ -6,6 +6,7 @@ Redirections.grid.Redirects = function(config) {
         handler	: this.createRedirect
    }, '->', {
     	xtype		: 'modx-combo-context',
+    	hidden		: 0 == parseInt(Redirections.config.context) ? true : false,
     	name		: 'redirections-filter-context',
         id			: 'redirections-filter-context',
         emptyText	: _('redirections.filter_context'),
@@ -119,7 +120,7 @@ Redirections.grid.Redirects = function(config) {
         paging		: true,
         pageSize	: MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
         sortBy		: 'id',
-        grouping	: true,
+        grouping	: 0 == parseInt(Redirections.config.context) ? false : true,
         groupBy		: 'context',
         singleText	: _('redirections.redirect'),
         pluralText	: _('redirections.redirects')
@@ -281,44 +282,36 @@ Redirections.window.CreateRedirect = function(config) {
             html		: _('redirections.label_new_desc'),
             cls			: 'desc-under'
         }, {
-        	layout		: 'column',
-        	border		: false,
-            defaults	: {
-                layout		: 'form',
-                labelSeparator : ''
-            },
-        	items		: [{
-		        columnWidth	: .5,
-	        	items		: [{
-		        	xtype		: 'redirections-combo-xtype',
-		        	fieldLabel	: _('redirections.label_type'),
-		        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
-		        	name		: 'type',
-		        	anchor		: '100%',
-		        	allowBlank	: false,
-		        }, {
-		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-		        	html		: _('redirections.label_type_desc'),
-		        	cls			: 'desc-under'
-		        }]
+        	xtype		: 'redirections-combo-xtype',
+        	fieldLabel	: _('redirections.label_type'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
+        	name		: 'type',
+        	anchor		: '100%',
+        	allowBlank	: false,
+        }, {
+        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+        	html		: _('redirections.label_type_desc'),
+        	cls			: 'desc-under'
+        }, {
+	    	layout		: 'form',
+	    	hidden		: 0 == parseInt(Redirections.config.context) ? true : false,
+			defaults 	: {
+				labelSeparator : ''	
+			},
+	    	items		: [{
+	        	xtype		: 'modx-combo-context',
+	        	fieldLabel	: _('redirections.label_context'),
+	        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
+	        	name		: 'context',
+	        	anchor		: '100%',
+	        	allowBlank	: false,
+	        	value		: MODx.config.default_context
 	        }, {
-	        	columnWidth	: .5,
-	        	style		: 'margin-right: 0;',
-	        	items		: [{
-		        	xtype		: 'modx-combo-context',
-		        	fieldLabel	: _('redirections.label_context'),
-		        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
-		        	name		: 'context',
-		        	anchor		: '100%',
-		        	allowBlank	: false,
-		        	value		: 'web'
-		        }, {
-		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-		        	html		: _('redirections.label_context_desc'),
-		        	cls			: 'desc-under'
-		        }]
+	        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+	        	html		: _('redirections.label_context_desc'),
+	        	cls			: 'desc-under'
 	        }]
-        }]
+	    }]
     });
     
     Redirections.window.CreateRedirect.superclass.constructor.call(this, config);
@@ -393,44 +386,42 @@ Redirections.window.UpdateRedirect = function(config) {
             html		: _('redirections.label_new_desc'),
             cls			: 'desc-under'
         }, {
-        	layout		: 'column',
-        	border		: false,
-            defaults	: {
-                layout		: 'form',
-                labelSeparator : ''
-            },
-        	items		: [{
-	        	columnWidth	: .5,
-	        	items		: [{
-		        	xtype		: 'redirections-combo-xtype',
-		        	fieldLabel	: _('redirections.label_type'),
-		        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
-		        	name		: 'type',
-		        	anchor		: '100%',
-		        	allowBlank	: false,
-		        }, {
-		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-		        	html		: _('redirections.label_type_desc'),
-		        	cls			: 'desc-under'
-		        }]
+        	xtype		: 'redirections-combo-xtype',
+        	fieldLabel	: _('redirections.label_type'),
+        	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
+        	name		: 'type',
+        	anchor		: '100%',
+        	allowBlank	: false,
+        }, {
+        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+        	html		: _('redirections.label_type_desc'),
+        	cls			: 'desc-under'
+        }, {
+	    	layout		: 'form',
+	    	hidden		: 0 == parseInt(Redirections.config.context) ? true : false,
+			defaults 	: {
+				labelSeparator : ''	
+			},
+	    	items		: [{
+	        	xtype		: 'modx-combo-context',
+	        	fieldLabel	: _('redirections.label_context'),
+	        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
+	        	name		: 'context',
+	        	anchor		: '100%',
+	        	allowBlank	: false
 	        }, {
-		        columnWidth	: .5,
-		        style		: 'margin-right: 0;',
-	        	items		: [{
-		        	xtype		: 'modx-combo-context',
-		        	fieldLabel	: _('redirections.label_context'),
-		        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
-		        	name		: 'context',
-		        	anchor		: '100%',
-		        	allowBlank	: false
-		        }, {
-		        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
-		        	html		: _('redirections.label_context_desc'),
-		        	cls			: 'desc-under'
-		        }]
-	        }]
-        }]
-    });
+	        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
+	        	html		: _('redirections.label_context_desc'),
+	        	cls			: 'desc-under'
+			}],
+	        listeners	: {
+	        	'render'	: {
+		        	fn 			: this.context,
+		        	scope 		: this
+	        	}
+	        }
+	    }]
+	});
     
     Redirections.window.UpdateRedirect.superclass.constructor.call(this, config);
 };
