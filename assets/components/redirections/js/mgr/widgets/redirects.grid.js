@@ -223,6 +223,7 @@ Redirections.window.CreateRedirect = function(config) {
     config = config || {};
     
     Ext.applyIf(config, {
+    	autoHeight	: true,
         title 		: _('redirections.redirect_create'),
         url			: Redirections.config.connectorUrl,
         baseParams	: {
@@ -325,6 +326,7 @@ Redirections.window.UpdateRedirect = function(config) {
     config = config || {};
     
     Ext.applyIf(config, {
+    	autoHeight	: true,
         title 		: _('redirections.redirect_update'),
         url			: Redirections.config.connectorUrl,
         baseParams	: {
@@ -413,13 +415,7 @@ Redirections.window.UpdateRedirect = function(config) {
 	        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
 	        	html		: _('redirections.label_context_desc'),
 	        	cls			: 'desc-under'
-			}],
-	        listeners	: {
-	        	'render'	: {
-		        	fn 			: this.context,
-		        	scope 		: this
-	        	}
-	        }
+			}]
 	    }]
 	});
     
