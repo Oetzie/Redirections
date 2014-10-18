@@ -3,8 +3,27 @@ Redirections.grid.Redirects = function(config) {
 
 	config.tbar = [{
         text	: _('redirections.redirect_create'),
-        handler	: this.createRedirect
-   }, '->', {
+        cls		:'primary-button',
+        handler	: this.createRedirect,
+        scope	: this
+   }, {
+		text	: _('bulk_actions'),
+		menu	: [{
+			text	: _('redirections.activate_selected'),
+			name	: 'activate',
+			handler	: this.activateSelectedRedirect,
+			scope	: this
+		},{
+			text	: _('redirections.deactivate_selected'),
+			name	: 'deactivate',
+			handler	: this.activateSelectedRedirect,
+			scope	: this
+		},{
+			text	: _('redirections.remove_selected'),
+			handler	: this.removeSelectedRedirect,
+			scope	: this
+		}]
+	}, '->', {
     	xtype		: 'modx-combo-context',
     	hidden		: 0 == parseInt(Redirections.config.context) ? true : false,
     	name		: 'redirections-filter-context',
@@ -40,6 +59,7 @@ Redirections.grid.Redirects = function(config) {
         }
     }, {
     	xtype	: 'button',
+    	cls		: 'x-form-filter-clear',
     	id		: 'redirections-filter-clear',
     	text	: _('filter_clear'),
     	listeners: {
@@ -49,9 +69,11 @@ Redirections.grid.Redirects = function(config) {
         	}
         }
     }];
+    
+    sm = new Ext.grid.CheckboxSelectionModel();
 
     columns = new Ext.grid.ColumnModel({
-        columns: [{
+        columns: [sm, {
             header		: _('redirections.label_old'),
             dataIndex	: 'old',
             sortable	: true,
@@ -87,7 +109,7 @@ Redirections.grid.Redirects = function(config) {
             editable	: true,
             width		: 100,
             fixed		: true,
-			renderer	: this.renderActive,
+			renderer	: this.renderBoolean,
 			editor		: {
             	xtype		: 'modx-combo-boolean'
             }
@@ -108,6 +130,7 @@ Redirections.grid.Redirects = function(config) {
     });
     
     Ext.applyIf(config, {
+    	sm			: sm,
     	cm			: columns,
         id			: 'redirections-grid-redirects',
         url			: Redirections.config.connectorUrl,
@@ -173,6 +196,59 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         
         this.createRedirectWindow.show(e.target);
     },
+    activateSelectedRedirect: function(btn, e) {
+    	var cs = this.getSelectedAsList();
+    	
+        if (cs === false) {
+        	return false;
+        }
+        
+    	MODx.msg.confirm({
+        	title 	: _('redirections.redirect_activate_selected'),
+        	text	: _('redirections.redirect_activate_selected_confirm'),
+        	url		: this.config.url,
+        	params	: {
+            	action	: 'mgr/activateSelected',
+            	ids		: cs,
+            	type	: btn.name
+            },
+            listeners: {
+            	'success': {
+            		fn		: function() {
+            			this.getSelectionModel().clearSelections(true);
+            			this.refresh();
+            		},
+            		scope	: this
+            	}
+            }
+    	});
+    },
+    removeSelectedRedirect: function(btn, e) {
+    	var cs = this.getSelectedAsList();
+    	
+        if (cs === false) {
+        	return false;
+        }
+        
+    	MODx.msg.confirm({
+        	title 	: _('redirections.redirect_remove_selected'),
+        	text	: _('redirections.redirect_remove_selected_confirm'),
+        	url		: this.config.url,
+        	params	: {
+            	action	: 'mgr/removeSelected',
+            	ids		: cs
+            },
+            listeners: {
+            	'success': {
+            		fn		: function() {
+            			this.getSelectionModel().clearSelections(true);
+            			this.refresh();
+            		},
+            		scope	: this
+            	}
+            }
+    	});
+    },
     updateRedirect: function(btn, e) {
         if (this.updateRedirectWindow) {
 	        this.updateRedirectWindow.destroy();
@@ -193,7 +269,7 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         this.updateRedirectWindow.setValues(this.menu.record);
         this.updateRedirectWindow.show(e.target);
     },
-    removeRedirect: function() {
+    removeRedirect: function(btn, e) {
     	MODx.msg.confirm({
         	title 	: _('redirections.redirect_remove'),
         	text	: _('redirections.redirect_remove_confirm'),
@@ -210,7 +286,7 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
             }
     	});
     },
-    renderActive: function(d, c) {
+    renderBoolean: function(d, c) {
     	c.css = 1 == parseInt(d) || d ? 'green' : 'red';
     	
     	return 1 == parseInt(d) || d ? _('yes') : _('no');
