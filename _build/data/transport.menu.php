@@ -3,6 +3,7 @@
 	$action = $modx->newObject('modAction');
 	$action->fromArray(array(
 	    'id' 			=> 1,
+	    'namespace' 	=> PKG_NAME_LOWER,
 	    'parent' 		=> 0,
 	    'controller' 	=> 'index',
 	    'haslayout' 	=> true,
