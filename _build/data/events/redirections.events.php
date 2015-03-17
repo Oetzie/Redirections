@@ -2,7 +2,7 @@
 
 	return array(
 		array(
-		    'event' 		=> 'OnPageNotFound',
+		    'event' 		=> 'OnHandleRequest',
 		    'priority' 		=> 0,
 		    'propertyset' 	=> 0
 		)

@@ -1,1 +1,0 @@
-<div id="offlineip-panel-home-div"></div>
