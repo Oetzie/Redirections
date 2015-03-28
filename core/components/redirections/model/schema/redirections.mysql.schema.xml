@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="offlineip" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" version="1.0">
-    <object class="Exceptions" table="offlineip_exceptions" extends="xPDOSimpleObject">
+<model package="redirections" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" version="1.0">
+    <object class="RedirectionsRedirects" table="redirections_redirects" extends="xPDOSimpleObject">
     	<field key="id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native"/>
     	<field key="context" dbtype="varchar" precision="75" phptype="string" null="false" default=""/>
-    	<field key="ip" dbtype="varchar" precision="15" phptype="string" null="false" default=""/>
-        <field key="name" dbtype="varchar" precision="75" phptype="string" null="false" default=""/>
-        <field key="description" dbtype="text" precision="" phptype="string" null="false" default=""/>
+        <field key="old" dbtype="text" precision="2048" phptype="string" null="false" default=""/>
+        <field key="new" dbtype="text" precision="2048" phptype="string" null="false" default=""/>
+        <field key="type" dbtype="varchar" precision="75" phptype="string" null="false" default=""/>
         <field key="active" dbtype="int" precision="1" phptype="integer" null="false" default="1"/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" attributes="ON UPDATE CURRENT_TIMESTAMP" null="false" default=""/>
         

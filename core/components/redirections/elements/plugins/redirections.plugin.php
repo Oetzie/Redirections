@@ -1,5 +1,4 @@
 <?php
-	
 	/**
 	 * Redirections
 	 *
@@ -56,10 +55,14 @@
 							}
 
 							if ($redirect['new'] != $modx->resourceIdentifier) {
-								if (0 === ($pos = strpos(ltrim($redirect['new'], '/'), ltrim($baseUrl, '/')))) {
-									$redirect['new'] = ltrim($redirect['new'], '/');
+								$baseUrl = ltrim($baseUrl, '/');
 
-									$redirect['new'] = substr($redirect['new'], strlen(ltrim($baseUrl, '/')), strlen($redirect['new']));
+								if (!empty($baseUrl)) {
+									if (0 === ($pos = strpos(ltrim($redirect['new'], '/'), $baseUrl))) {
+										$redirect['new'] = ltrim($redirect['new'], '/');
+
+										$redirect['new'] = substr($redirect['new'], strlen($baseUrl)), strlen($redirect['new']));
+									}
 								}
 
 								if (false === strpos($redirect['new'], '://')) {
@@ -77,5 +80,3 @@
 	}
 	
 	return;
-	
-?>

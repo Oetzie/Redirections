@@ -1,57 +1,57 @@
 <?php
 
 	/**
-	 * Offline IP
+	 * Redirections
 	 *
-	 * Copyright 2014 by Oene Tjeerd de Bruin <info@oetzie.nl>
+	 * Copyright 2013 by Oene Tjeerd de Bruin <info@oetzie.nl>
 	 *
-	 * This file is part of Offline IP, a real estate property listings component
+	 * This file is part of Redirections, a real estate property listings component
 	 * for MODX Revolution.
 	 *
-	 * Offline IP is free software; you can redistribute it and/or modify it under
+	 * Redirections is free software; you can redistribute it and/or modify it under
 	 * the terms of the GNU General Public License as published by the Free Software
 	 * Foundation; either version 2 of the License, or (at your option) any later
 	 * version.
 	 *
-	 * Offline IP is distributed in the hope that it will be useful, but WITHOUT ANY
+	 * Redirections is distributed in the hope that it will be useful, but WITHOUT ANY
 	 * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 	 * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 	 *
 	 * You should have received a copy of the GNU General Public License along with
-	 * Offline IP; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+	 * Redirections; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
 
-	class OfflineIpGetListProcessor extends modObjectGetListProcessor {
+	class RedirectsGetListProcessor extends modObjectGetListProcessor {
 		/**
 		 * @acces public.
 		 * @var String.
 		 */
-		public $classKey = 'OfflineIpExceptions';
+		public $classKey = 'RedirectionsRedirects';
 		
 		/**
 		 * @acces public.
 		 * @var Array.
 		 */
-		public $languageTopics = array('offlineip:default');
+		public $languageTopics = array('redirections:default');
 		
 		/**
 		 * @acces public.
 		 * @var String.
 		 */
-		public $defaultSortField = 'id';
+		public $defaultSortField = 'old';
 		
 		/**
 		 * @acces public.
 		 * @var String.
 		 */
-		public $defaultSortDirection = 'DESC';
+		public $defaultSortDirection = 'ASC';
 		
 		/**
 		 * @acces public.
 		 * @var String.
 		 */
-		public $objectType = 'offlineip.exceptions';
+		public $objectType = 'redirections.redirects';
 		
 		/**
 		 * @acces public.
@@ -83,8 +83,8 @@
 			
 			if (!empty($query)) {
 				$c->where(array(
-					'ip:LIKE' 		=> '%'.$query.'%',
-					'OR:name:LIKE' 	=> '%'.$query.'%'
+					'old:LIKE' 		=> '%'.$query.'%',
+					'OR:new:LIKE' 	=> '%'.$query.'%'
 				));
 			}
 			
@@ -109,6 +109,6 @@
 		}
 	}
 
-	return 'OfflineIpGetListProcessor';
+	return 'RedirectsGetListProcessor';
 	
 ?>
