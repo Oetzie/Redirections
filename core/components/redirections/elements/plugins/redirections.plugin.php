@@ -61,7 +61,7 @@
 									if (0 === ($pos = strpos(ltrim($redirect['new'], '/'), $baseUrl))) {
 										$redirect['new'] = ltrim($redirect['new'], '/');
 
-										$redirect['new'] = substr($redirect['new'], strlen($baseUrl)), strlen($redirect['new']));
+										$redirect['new'] = substr($redirect['new'], strlen($baseUrl), strlen($redirect['new']));
 									}
 								}
 
