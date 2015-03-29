@@ -3,6 +3,13 @@ Redirections
 ----------------------
 
 ----------------------
+Version: 1.1.1-pl
+Released: 2015-03-29
+----------------------
+- Some bugfixes
+- Dutch lexicon edit
+
+----------------------
 Version: 1.1.0-pl
 Released: 2014-09-23
 ----------------------

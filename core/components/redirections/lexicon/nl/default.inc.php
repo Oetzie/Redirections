@@ -31,7 +31,7 @@
 	$_lang['redirections.redirects']								= 'Verwijzingen';
 	$_lang['redirections.redirects_desc']							= 'Hier kun je alle verwijzingen instellen voor jouw MODX website. Een verwijzing is bedoelt om een oude pagina naar de nieuwe locatie te verwijzen, bijvoorbeeld links die verwijzen vanuit andere sites naar jouw site. Dode links, vooral die van Google, zijn slecht voor je SEO. Voor een wildcard in de oude URL gebruik % (de wildcard kun je door geven aan de nieuwe URL met $NUMMER_WILDCARD), gebruik een ^ om een URL reeks te starten (bv ^nieuws) of gebruik $ om een URL reeks te eindigen (bv nieuws$). Als nieuwe URL kun je [[~ID]] of een tekstuele URL gebruiken.';
 	$_lang['redirections.redirect_create']							= 'Maak nieuwe verwijzing';
-	$_lang['redirections.redirect_update']							= 'Verwijzing updaten';
+	$_lang['redirections.redirect_update']							= 'Verwijzing wijzigen';
 	$_lang['redirections.redirect_remove']							= 'Verwijzing verwijderen';
 	$_lang['redirections.redirect_remove_confirm']					= 'Weet je zeker dat je deze verwijzing wilt verwijderen? Dit kan slecht uitpakken voor je SEO.';
 	$_lang['redirections.redirect_remove_selected']					= 'Geselecteerde verwijzingen verwijderen';
