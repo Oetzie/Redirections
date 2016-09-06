@@ -3,7 +3,7 @@
 	/**
 	 * Redirections
 	 *
-	 * Copyright 2013 by Oene Tjeerd de Bruin <info@oetzie.nl>
+	 * Copyright 2016 by Oene Tjeerd de Bruin <info@oetzie.nl>
 	 *
 	 * This file is part of Redirections, a real estate property listings component
 	 * for MODX Revolution.
@@ -48,24 +48,28 @@
 			$assetsPath 	= $this->modx->getOption('redirections.assets_path', $config, $this->modx->getOption('assets_path').'components/redirections/');
 		
 			$this->config = array_merge(array(
-				'basePath'				=> $corePath,
-				'corePath' 				=> $corePath,
-				'modelPath' 			=> $corePath.'model/',
-				'processorsPath' 		=> $corePath.'processors/',
-				'elementsPath' 			=> $corePath.'elements/',
-				'chunksPath' 			=> $corePath.'elements/chunks/',
-				'snippetsPath' 			=> $corePath.'elements/snippets/',
-				'templatesPath' 		=> $corePath.'templates/',
-				'assetsPath' 			=> $assetsPath,
-				'jsUrl' 				=> $assetsUrl.'js/',
-				'cssUrl' 				=> $assetsUrl.'css/',
-				'assetsUrl' 			=> $assetsUrl,
-				'connectorUrl'			=> $assetsUrl.'connector.php',
-				'helpurl'				=> 'redirections',
-				'context'				=> 2 == $this->modx->getCount('modContext') ? 0 : 1
+				'namespace'				=> $this->modx->getOption('namespace', $config, 'redirections'),
+				'helpurl'				=> $this->modx->getOption('namespace', $config, 'redirections'),
+				'language'				=> 'redirections:default',
+				'base_path'				=> $corePath,
+				'core_path' 			=> $corePath,
+				'model_path' 			=> $corePath.'model/',
+				'processors_path' 		=> $corePath.'processors/',
+				'elements_path' 		=> $corePath.'elements/',
+				'chunks_path' 			=> $corePath.'elements/chunks/',
+				'cronjobs_path' 		=> $corePath.'elements/cronjobs/',
+				'plugins_path' 			=> $corePath.'elements/plugins/',
+				'snippets_path' 		=> $corePath.'elements/snippets/',
+				'templates_path' 		=> $corePath.'templates/',
+				'assets_path' 			=> $assetsPath,
+				'js_url' 				=> $assetsUrl.'js/',
+				'css_url' 				=> $assetsUrl.'css/',
+				'assets_url' 			=> $assetsUrl,
+				'connector_url'			=> $assetsUrl.'connector.php',
+				'context'				=> $this->getContexts()
 			), $config);	
 		
-			$this->modx->addPackage('redirections', $this->config['modelPath']);
+			$this->modx->addPackage('redirections', $this->config['model_path']);
 		}
 		
 		/**
@@ -77,13 +81,34 @@
 		}
 		
 		/**
+		 * @acces private.
+		 * @return Boolean.
+		 */
+		private function getContexts() {
+			$context = array();
+			
+			foreach ($this->modx->getCollection('modContext') as $value) {
+				if ('mgr' != $value->key) {
+					$context[] = $value->toArray();
+				}
+			}
+			
+			return 1 == count($context) ? 0 : 1;
+		}
+		
+		/**
 		 * @acces public.
 		 * @return Array.
 		 */
 		public function getRedirects() {
 			$redirects = array();
+			
+			$criteria = array(
+				'context' 		=> $this->modx->context->key,
+				'active' 		=> 1
+			);
 	
-			foreach($this->modx->getCollection('RedirectionsRedirects', array('context' => $this->modx->context->key, 'active' => 1)) as $key => $value) {
+			foreach($this->modx->getCollection('RedirectionsRedirects', $criteria) as $key => $value) {
 				$redirects[] = $value->toArray();
 			}
 			

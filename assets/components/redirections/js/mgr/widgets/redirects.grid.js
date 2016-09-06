@@ -13,12 +13,12 @@ Redirections.grid.Redirects = function(config) {
 			name	: 'activate',
 			handler	: this.activateSelectedRedirect,
 			scope	: this
-		},{
+		}, {
 			text	: _('redirections.deactivate_selected'),
 			name	: 'deactivate',
 			handler	: this.activateSelectedRedirect,
 			scope	: this
-		},{
+		}, '-', {
 			text	: _('redirections.remove_selected'),
 			handler	: this.removeSelectedRedirect,
 			scope	: this
@@ -119,7 +119,8 @@ Redirections.grid.Redirects = function(config) {
             sortable	: true,
             editable	: false,
             fixed		: true,
-			width		: 200
+			width		: 200,
+			renderer	: this.renderDate
         }, {
             header		: _('context'),
             dataIndex	: 'context',
@@ -133,7 +134,7 @@ Redirections.grid.Redirects = function(config) {
     	sm			: sm,
     	cm			: columns,
         id			: 'redirections-grid-redirects',
-        url			: Redirections.config.connectorUrl,
+        url			: Redirections.config.connector_url,
         baseParams	: {
         	action		: 'mgr/getList'
         },
@@ -290,6 +291,13 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
     	c.css = 1 == parseInt(d) || d ? 'green' : 'red';
     	
     	return 1 == parseInt(d) || d ? _('yes') : _('no');
+    },
+	renderDate: function(a) {
+        if (Ext.isEmpty(a)) {
+            return '—';
+        }
+
+        return a;
     }
 });
 
@@ -301,7 +309,7 @@ Redirections.window.CreateRedirect = function(config) {
     Ext.applyIf(config, {
     	autoHeight	: true,
         title 		: _('redirections.redirect_create'),
-        url			: Redirections.config.connectorUrl,
+        url			: Redirections.config.connector_url,
         baseParams	: {
             action		: 'mgr/create'
         },
@@ -404,7 +412,7 @@ Redirections.window.UpdateRedirect = function(config) {
     Ext.applyIf(config, {
     	autoHeight	: true,
         title 		: _('redirections.redirect_update'),
-        url			: Redirections.config.connectorUrl,
+        url			: Redirections.config.connector_url,
         baseParams	: {
             action		: 'mgr/update'
         },

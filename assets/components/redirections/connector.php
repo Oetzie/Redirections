@@ -3,7 +3,7 @@
 	/**
 	 * Redirections
 	 *
-	 * Copyright 2013 by Oene Tjeerd de Bruin <info@oetzie.nl>
+	 * Copyright 2016 by Oene Tjeerd de Bruin <info@oetzie.nl>
 	 *
 	 * This file is part of Redirections, a real estate property listings component
 	 * for MODX Revolution.
@@ -21,23 +21,17 @@
 	 * Redirections; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
-	 
+	
 	require_once dirname(dirname(dirname(dirname(__FILE__)))).'/config.core.php';
 	require_once MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php';
 	require_once MODX_CONNECTORS_PATH.'index.php';
 	
-	$corePath = $modx->getOption('redirections.core_path', null, $modx->getOption('core_path').'components/redirections/');
-	
-	require_once $corePath.'model/redirections/redirections.class.php';
-	
-	$modx->redirections = new Redirections($modx);
-	
-	$modx->lexicon->load('redirections:default');
-	
-	$path = $modx->getOption('processorsPath', $modx->redirections->config, $corePath.'processors/');
-	
+	$redirections = $modx->getService('redirections', 'Redirections', $modx->getOption('redirections.core_path', null, $modx->getOption('core_path').'components/redirections/').'model/redirections/');
+
+	$modx->lexicon->load($modx->getOption('language', $redirections->config));
+
 	$modx->request->handleRequest(array(
-		'processors_path' 	=> $path,
+		'processors_path' 	=> $modx->getOption('processors_path', $redirections->config),
 		'location' 			=> ''
 	));
 

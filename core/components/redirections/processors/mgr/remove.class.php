@@ -3,7 +3,7 @@
 	/**
 	 * Redirections
 	 *
-	 * Copyright 2013 by Oene Tjeerd de Bruin <info@oetzie.nl>
+	 * Copyright 2016 by Oene Tjeerd de Bruin <info@oetzie.nl>
 	 *
 	 * This file is part of Redirections, a real estate property listings component
 	 * for MODX Revolution.
@@ -40,6 +40,22 @@
 		 * @var String.
 		 */
 		public $objectType = 'redirections.redirects';
+		
+		/**
+		 * @acces public.
+		 * @var Object.
+		 */
+		public $redirections;
+		
+		/**
+		 * @acces public.
+		 * @return Mixed.
+		 */
+		public function initialize() {
+			$this->redirections = $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path').'components/redirections/').'model/redirections/');
+
+			return parent::initialize();
+		}
 	}
 	
 	

@@ -3,7 +3,7 @@
 	/**
 	 * Redirections
 	 *
-	 * Copyright 2013 by Oene Tjeerd de Bruin <info@oetzie.nl>
+	 * Copyright 2016 by Oene Tjeerd de Bruin <info@oetzie.nl>
 	 *
 	 * This file is part of Redirections, a real estate property listings component
 	 * for MODX Revolution.
@@ -55,16 +55,22 @@
 		
 		/**
 		 * @acces public.
+		 * @var Object.
+		 */
+		public $redirections;
+		
+		/**
+		 * @acces public.
 		 * @return Mixed.
 		 */
 		public function initialize() {
-			$initialized = parent::initialize();
-			
+			$this->redirections = $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path').'components/redirections/').'model/redirections/');
+
 			$this->setDefaultProperties(array(
-				'dateFormat' => '%b %d, %Y %I:%M %p',
+				'dateFormat' => $this->modx->getOption('manager_date_format') .', '. $this->modx->getOption('manager_time_format')
 			));
 			
-			return $initialized;
+			return parent::initialize();
 		}
 		
 		/**
@@ -99,10 +105,10 @@
 		public function prepareRow(xPDOObject $object) {
 			$array = $object->toArray();
 
-			if (in_array($array['editedon'], array('-001-11-30 00:00:00', '0000-00-00 00:00:00', null))) {
+			if (in_array($array['editedon'], array('-001-11-30 00:00:00', '-1-11-30 00:00:00', '0000-00-00 00:00:00', null))) {
 				$array['editedon'] = '';
 			} else {
-				$array['editedon'] = strftime($this->getProperty('dateFormat', '%b %d, %Y %I:%M %p'), strtotime($array['editedon']));
+				$array['editedon'] = date($this->getProperty('dateFormat'), strtotime($array['editedon']));
 			}
 			
 			return $array;	
