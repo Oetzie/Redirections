@@ -4,11 +4,11 @@
 	    switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 	        case xPDOTransport::ACTION_INSTALL:
 	            $modx =& $object->xpdo;
-	            $modx->addPackage('offlineip', $modx->getOption('offlineip.core_path', null, $modx->getOption('core_path').'components/offlineip/').'model/');
+	            $modx->addPackage('redirections', $modx->getOption('redirections.core_path', null, $modx->getOption('core_path').'components/redirections/').'model/');
 	
 	            $manager = $modx->getManager();
 	
-	            $manager->createObjectContainer('OfflineIpExceptions');
+	            $manager->createObjectContainer('RedirectionsRedirects');
 	
 	            break;
 	        case xPDOTransport::ACTION_UPGRADE:
