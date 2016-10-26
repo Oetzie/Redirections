@@ -22,7 +22,7 @@
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
 
-	class RedirectsGetListProcessor extends modObjectGetListProcessor {
+	class RedirectionsRedirectsGetListProcessor extends modObjectGetListProcessor {
 		/**
 		 * @acces public.
 		 * @var String.
@@ -115,6 +115,6 @@
 		}
 	}
 
-	return 'RedirectsGetListProcessor';
+	return 'RedirectionsRedirectsGetListProcessor';
 	
 ?>

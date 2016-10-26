@@ -21,8 +21,8 @@
 	 * Redirections; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
-
-	class RedirectsActivateSelectedProcessor extends modProcessor {
+	 
+	class RedirectionsRedirectsRemoveProcessor extends modObjectRemoveProcessor {
 		/**
 		 * @acces public.
 		 * @var String.
@@ -56,27 +56,8 @@
 
 			return parent::initialize();
 		}
-		
-		/**
-		 * @acces public.
-		 * @return Mixed.
-		 */
-		public function process() {
-			foreach (explode(',', $this->getProperty('ids')) as $key => $value) {
-				$criteria = array('id' => $value);
-				
-				if (false !== ($object = $this->modx->getObject($this->classKey, $criteria))) {
-					$object->fromArray(array(
-						'active' => 'activate' == $this->getProperty('type') ? 1 : 0
-					));
-					$object->save();
-				}
-			}
-			
-			return $this->outputArray(array());
-		}
 	}
-
-	return 'RedirectsActivateSelectedProcessor';
-
+	
+	return 'RedirectionsRedirectsRemoveProcessor';
+	
 ?>

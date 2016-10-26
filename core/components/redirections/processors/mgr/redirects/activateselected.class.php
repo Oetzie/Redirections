@@ -22,7 +22,7 @@
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
 
-	class RedirectsRemoveSelectedProcessor extends modProcessor {
+	class RedirectionsRedirectsActivateSelectedProcessor extends modProcessor {
 		/**
 		 * @acces public.
 		 * @var String.
@@ -66,7 +66,10 @@
 				$criteria = array('id' => $value);
 				
 				if (false !== ($object = $this->modx->getObject($this->classKey, $criteria))) {
-					$object->remove();
+					$object->fromArray(array(
+						'active' => 'activate' == $this->getProperty('type') ? 1 : 0
+					));
+					$object->save();
 				}
 			}
 			
@@ -74,6 +77,6 @@
 		}
 	}
 
-	return 'RedirectsRemoveSelectedProcessor';
+	return 'RedirectionsRedirectsActivateSelectedProcessor';
 
 ?>

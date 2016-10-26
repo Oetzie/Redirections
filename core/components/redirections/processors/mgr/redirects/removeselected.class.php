@@ -1,5 +1,5 @@
 <?php
-	
+
 	/**
 	 * Redirections
 	 *
@@ -22,7 +22,7 @@
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
 
-	class RedirectionsCreateProcessor extends modObjectCreateProcessor {
+	class RedirectionsRedirectsRemoveSelectedProcessor extends modProcessor {
 		/**
 		 * @acces public.
 		 * @var String.
@@ -54,13 +54,26 @@
 		public function initialize() {
 			$this->redirections = $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path').'components/redirections/').'model/redirections/');
 
-			if (null === $this->getProperty('active')) {
-				$this->setProperty('active', 0);
-			}
-
 			return parent::initialize();
 		}
+		
+		/**
+		 * @acces public.
+		 * @return Mixed.
+		 */
+		public function process() {
+			foreach (explode(',', $this->getProperty('ids')) as $key => $value) {
+				$criteria = array('id' => $value);
+				
+				if (false !== ($object = $this->modx->getObject($this->classKey, $criteria))) {
+					$object->remove();
+				}
+			}
+			
+			return $this->outputArray(array());
+		}
 	}
-	
-	return 'RedirectionsCreateProcessor';
+
+	return 'RedirectionsRedirectsRemoveSelectedProcessor';
+
 ?>

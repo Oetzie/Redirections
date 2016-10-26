@@ -9,18 +9,18 @@ Redirections.grid.Redirects = function(config) {
    }, {
 		text	: _('bulk_actions'),
 		menu	: [{
-			text	: _('redirections.activate_selected'),
+			text	: _('redirections.redirects_activate_selected'),
 			name	: 'activate',
-			handler	: this.activateSelectedRedirect,
+			handler	: this.activateSelectedRedirects,
 			scope	: this
 		}, {
-			text	: _('redirections.deactivate_selected'),
+			text	: _('redirections.redirects_deactivate_selected'),
 			name	: 'deactivate',
-			handler	: this.activateSelectedRedirect,
+			handler	: this.activateSelectedRedirects,
 			scope	: this
 		}, '-', {
-			text	: _('redirections.remove_selected'),
-			handler	: this.removeSelectedRedirect,
+			text	: _('redirections.redirects_remove_selected'),
+			handler	: this.removeSelectedRedirects,
 			scope	: this
 		}]
 	}, '->', {
@@ -31,8 +31,8 @@ Redirections.grid.Redirects = function(config) {
         emptyText	: _('redirections.filter_context'),
         listeners	: {
         	'select'	: {
-	            	fn			: this.filterContext,
-	            	scope		: this   
+	            	fn		: this.filterContext,
+	            	scope	: this   
 		    }
 		},
 		width: 250
@@ -58,14 +58,14 @@ Redirections.grid.Redirects = function(config) {
 	        }
         }
     }, {
-    	xtype	: 'button',
-    	cls		: 'x-form-filter-clear',
-    	id		: 'redirections-filter-clear',
-    	text	: _('filter_clear'),
-    	listeners: {
-        	'click': {
-        		fn		: this.clearFilter,
-        		scope	: this
+    	xtype		: 'button',
+    	cls			: 'x-form-filter-clear',
+    	id			: 'redirections-filter-clear',
+    	text		: _('filter_clear'),
+    	listeners	: {
+        	'click'		: {
+        		fn			: this.clearFilter,
+        		scope		: this
         	}
         }
     }];
@@ -136,10 +136,10 @@ Redirections.grid.Redirects = function(config) {
         id			: 'redirections-grid-redirects',
         url			: Redirections.config.connector_url,
         baseParams	: {
-        	action		: 'mgr/getList'
+        	action		: 'mgr/redirects/getlist'
         },
         autosave	: true,
-        save_action	: 'mgr/updateFromGrid',
+        save_action	: 'mgr/redirects/updatefromgrid',
         fields		: ['id', 'context', 'old', 'new', 'type', 'active', 'editedon'],
         paging		: true,
         pageSize	: MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
@@ -188,67 +188,13 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
 	        closeAction	:'close',
 	        listeners	: {
 		        'success'	: {
-		        	fn			:this.refresh,
-		        	scope		:this
+		        	fn			: this.refresh,
+		        	scope		: this
 		        }
 	         }
         });
         
-        
         this.createRedirectWindow.show(e.target);
-    },
-    activateSelectedRedirect: function(btn, e) {
-    	var cs = this.getSelectedAsList();
-    	
-        if (cs === false) {
-        	return false;
-        }
-        
-    	MODx.msg.confirm({
-        	title 	: _('redirections.redirect_activate_selected'),
-        	text	: _('redirections.redirect_activate_selected_confirm'),
-        	url		: this.config.url,
-        	params	: {
-            	action	: 'mgr/activateSelected',
-            	ids		: cs,
-            	type	: btn.name
-            },
-            listeners: {
-            	'success': {
-            		fn		: function() {
-            			this.getSelectionModel().clearSelections(true);
-            			this.refresh();
-            		},
-            		scope	: this
-            	}
-            }
-    	});
-    },
-    removeSelectedRedirect: function(btn, e) {
-    	var cs = this.getSelectedAsList();
-    	
-        if (cs === false) {
-        	return false;
-        }
-        
-    	MODx.msg.confirm({
-        	title 	: _('redirections.redirect_remove_selected'),
-        	text	: _('redirections.redirect_remove_selected_confirm'),
-        	url		: this.config.url,
-        	params	: {
-            	action	: 'mgr/removeSelected',
-            	ids		: cs
-            },
-            listeners: {
-            	'success': {
-            		fn		: function() {
-            			this.getSelectionModel().clearSelections(true);
-            			this.refresh();
-            		},
-            		scope	: this
-            	}
-            }
-    	});
     },
     updateRedirect: function(btn, e) {
         if (this.updateRedirectWindow) {
@@ -261,8 +207,8 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
 	        closeAction	:'close',
 	        listeners	: {
 		        'success'	: {
-		        	fn			:this.refresh,
-		        	scope		:this
+		        	fn			: this.refresh,
+		        	scope		: this
 		        }
 	         }
         });
@@ -274,15 +220,68 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
     	MODx.msg.confirm({
         	title 	: _('redirections.redirect_remove'),
         	text	: _('redirections.redirect_remove_confirm'),
-        	url		: this.config.url,
+        	url		: Redirections.config.connector_url,
         	params	: {
-            	action	: 'mgr/remove',
+            	action	: 'mgr/redirects/remove',
             	id		: this.menu.record.id
             },
             listeners: {
-            	'success': {
-            		fn		: this.refresh,
-            		scope	: this
+            	'success'	: {
+            		fn			: this.refresh,
+            		scope		: this
+            	}
+            }
+    	});
+    },
+    activateSelectedRedirects: function(btn, e) {
+    	var cs = this.getSelectedAsList();
+    	
+        if (cs === false) {
+        	return false;
+        }
+        
+    	MODx.msg.confirm({
+        	title 	: _('redirections.redirects_activate_selected'),
+        	text	: _('redirections.redirects_activate_selected_confirm'),
+        	url		: Redirections.config.connector_url,
+        	params	: {
+            	action	: 'mgr/redirects/activateselected',
+            	ids		: cs,
+            	type	: btn.name
+            },
+            listeners: {
+            	'success'	: {
+            		fn			: function() {
+            			this.getSelectionModel().clearSelections(true);
+            			this.refresh();
+            		},
+            		scope		: this
+            	}
+            }
+    	});
+    },
+    removeSelectedRedirects: function(btn, e) {
+    	var cs = this.getSelectedAsList();
+    	
+        if (cs === false) {
+        	return false;
+        }
+        
+    	MODx.msg.confirm({
+        	title 	: _('redirections.redirects_remove_selected'),
+        	text	: _('redirections.redirects_remove_selected_confirm'),
+        	url		: Redirections.config.connector_url,
+        	params	: {
+            	action	: 'mgr/redirects/removeselected',
+            	ids		: cs
+            },
+            listeners: {
+            	'success'	: {
+            		fn			: function() {
+            			this.getSelectionModel().clearSelections(true);
+            			this.refresh();
+            		},
+            		scope		: this
             	}
             }
     	});
@@ -311,7 +310,7 @@ Redirections.window.CreateRedirect = function(config) {
         title 		: _('redirections.redirect_create'),
         url			: Redirections.config.connector_url,
         baseParams	: {
-            action		: 'mgr/create'
+            action		: 'mgr/redirects/create'
         },
         defauls		: {
 	        labelAlign	: 'top',
@@ -414,7 +413,7 @@ Redirections.window.UpdateRedirect = function(config) {
         title 		: _('redirections.redirect_update'),
         url			: Redirections.config.connector_url,
         baseParams	: {
-            action		: 'mgr/update'
+            action		: 'mgr/redirects/update'
         },
         defauls		: {
 	        labelAlign	: 'top',

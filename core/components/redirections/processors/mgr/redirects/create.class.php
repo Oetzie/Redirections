@@ -1,5 +1,5 @@
 <?php
-
+	
 	/**
 	 * Redirections
 	 *
@@ -22,7 +22,7 @@
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
 
-	class RedirectsUpdateProcessor extends modObjectUpdateProcessor {
+	class RedirectionsRedirectsCreateProcessor extends modObjectCreateProcessor {
 		/**
 		 * @acces public.
 		 * @var String.
@@ -62,6 +62,5 @@
 		}
 	}
 	
-	return 'RedirectsUpdateProcessor';
-	
+	return 'RedirectionsRedirectsCreateProcessor';
 ?>

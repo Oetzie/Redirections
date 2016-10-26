@@ -23,7 +23,7 @@
 	 */
 
 	$_lang['redirections'] 											= 'Redirects';
-	$_lang['redirections.desc'] 									= 'Change or create site-wide redirects';
+	$_lang['redirections.desc'] 									= 'Change or create redirects';
 	
 	$_lang['area_redirections'] 									= 'Redirects';
 	
@@ -34,12 +34,12 @@
 	$_lang['redirections.redirect_update']							= 'Update redirect';
 	$_lang['redirections.redirect_remove']							= 'Delete redirect';
 	$_lang['redirections.redirect_remove_confirm']					= 'Are you sure you want to delete this redirect? This can be bad for your SEO.';
-	$_lang['redirections.redirect_remove_selected']					= 'Delete selected redirects';
-	$_lang['redirections.redirect_remove_selected_confirm']			= 'Are you sure you want to delete the selected redirects?';
-	$_lang['redirections.redirect_activate_selected']				= 'Activate selected redirects';
-	$_lang['redirections.redirect_activate_selected_confirm']		= 'Are you sure you want to activate the selected redirects?';
-	$_lang['redirections.redirect_deactivate_selected']				= 'Deactivate selected redirects';
-	$_lang['redirections.redirect_deactivate_selected_confirm']		= 'Are you sure you want to deactivate the selected redirects?';
+	$_lang['redirections.redirects_remove_selected']				= 'Delete selected redirects';
+	$_lang['redirections.redirects_remove_selected_confirm']		= 'Are you sure you want to delete the selected redirects?';
+	$_lang['redirections.redirects_activate_selected']				= 'Activate selected redirects';
+	$_lang['redirections.redirects_activate_selected_confirm']		= 'Are you sure you want to activate the selected redirects?';
+	$_lang['redirections.redirects_deactivate_selected']			= 'Deactivate selected redirects';
+	$_lang['redirections.redirects_deactivate_selected_confirm']	= 'Are you sure you want to deactivate the selected redirects?';
 	
 	$_lang['redirections.label_old']								= 'Old URL';
 	$_lang['redirections.label_old_desc']							= 'The old URL of the redirect.';
@@ -53,8 +53,5 @@
 	$_lang['redirections.label_active_desc']						= '';
 	
 	$_lang['redirections.filter_context']							= 'Filter on context...';
-	$_lang['redirections.activate_selected']						= 'Activate selected';
-	$_lang['redirections.deactivate_selected']						= 'Deactivate selected';
-	$_lang['redirections.remove_selected']							= 'Delete selected';
 	
 ?>

@@ -21,34 +21,47 @@
 	 * Redirections; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
-	
-	require_once dirname(__FILE__).'/update.class.php';
-	
-	class RedirectsUpdateFromGridProcessor extends RedirectsUpdateProcessor {
+
+	class RedirectionsRedirectsUpdateProcessor extends modObjectUpdateProcessor {
+		/**
+		 * @acces public.
+		 * @var String.
+		 */
+		public $classKey = 'RedirectionsRedirects';
+		
+		/**
+		 * @acces public.
+		 * @var Array.
+		 */
+		public $languageTopics = array('redirections:default');
+		
+		/**
+		 * @acces public.
+		 * @var String.
+		 */
+		public $objectType = 'redirections.redirects';
+		
+		/**
+		 * @acces public.
+		 * @var Object.
+		 */
+		public $redirections;
+		
 		/**
 		 * @acces public.
 		 * @return Mixed.
 		 */
 		public function initialize() {
-			$data = $this->getProperty('data');
-			
-			if (empty($data)) {
-				return $this->modx->lexicon('invalid_data');
+			$this->redirections = $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path').'components/redirections/').'model/redirections/');
+
+			if (null === $this->getProperty('active')) {
+				$this->setProperty('active', 0);
 			}
-			
-			$data = $this->modx->fromJSON($data);
-			
-			if (empty($data)) {
-				return $this->modx->lexicon('invalid_data');
-			}
-			
-			$this->setProperties($data);
-			$this->unsetProperty('data');
-			
+
 			return parent::initialize();
 		}
 	}
 	
-	return 'RedirectsUpdateFromGridProcessor';
+	return 'RedirectionsRedirectsUpdateProcessor';
 	
 ?>

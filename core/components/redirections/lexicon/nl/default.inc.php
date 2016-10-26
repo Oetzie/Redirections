@@ -23,7 +23,7 @@
 	 */
 
 	$_lang['redirections'] 											= 'Verwijzingen';
-	$_lang['redirections.desc'] 									= 'Wijzig of maak site-brede verwijzingen.';
+	$_lang['redirections.desc'] 									= 'Wijzig of maak verwijzingen.';
 	
 	$_lang['area_redirections']										= 'Verwijzingen';
 	
@@ -34,12 +34,12 @@
 	$_lang['redirections.redirect_update']							= 'Verwijzing wijzigen';
 	$_lang['redirections.redirect_remove']							= 'Verwijzing verwijderen';
 	$_lang['redirections.redirect_remove_confirm']					= 'Weet je zeker dat je deze verwijzing wilt verwijderen? Dit kan slecht uitpakken voor je SEO.';
-	$_lang['redirections.redirect_remove_selected']					= 'Geselecteerde verwijzingen verwijderen';
-	$_lang['redirections.redirect_remove_selected_confirm']			= 'Weet je zeker dat je de geselecteerde verwijzingen wilt verwijderen?';
-	$_lang['redirections.redirect_activate_selected']				= 'Geselecteerde verwijzingen activeren';
-	$_lang['redirections.redirect_activate_selected_confirm']		= 'Weet je zeker dat je de geselecteerde verwijzingen wilt activeren?';
-	$_lang['redirections.redirect_deactivate_selected']				= 'Geselecteerde verwijzingen deactiveren';
-	$_lang['redirections.redirect_deactivate_selected_confirm']		= 'Weet je zeker dat je de geselecteerde verwijzingen wilt deactiveren?';
+	$_lang['redirections.redirects_remove_selected']				= 'Geselecteerde verwijzingen verwijderen';
+	$_lang['redirections.redirects_remove_selected_confirm']		= 'Weet je zeker dat je de geselecteerde verwijzingen wilt verwijderen?';
+	$_lang['redirections.redirects_activate_selected']				= 'Geselecteerde verwijzingen activeren';
+	$_lang['redirections.redirects_activate_selected_confirm']		= 'Weet je zeker dat je de geselecteerde verwijzingen wilt activeren?';
+	$_lang['redirections.redirects_deactivate_selected']			= 'Geselecteerde verwijzingen deactiveren';
+	$_lang['redirections.redirects_deactivate_selected_confirm']	= 'Weet je zeker dat je de geselecteerde verwijzingen wilt deactiveren?';
 	
 	$_lang['redirections.label_old']								= 'Oude URL';
 	$_lang['redirections.label_old_desc']							= 'De oude URL van de verwijzing.';
@@ -53,8 +53,5 @@
 	$_lang['redirections.label_active_desc']						= '';
 	
 	$_lang['redirections.filter_context']							= 'Filter op context...';
-	$_lang['redirections.activate_selected']						= 'Activeer geselecteerden';
-	$_lang['redirections.deactivate_selected']						= 'Deactiveer geselecteerden';
-	$_lang['redirections.remove_selected']							= 'Verwijder geselecteerden';
 	
 ?>
