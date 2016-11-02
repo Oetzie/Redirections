@@ -31,8 +31,8 @@ Redirections.grid.Redirects = function(config) {
         emptyText	: _('redirections.filter_context'),
         listeners	: {
         	'select'	: {
-	            	fn		: this.filterContext,
-	            	scope	: this   
+	            fn			: this.filterContext,
+	            scope		: this   
 		    }
 		},
 		width: 250
@@ -46,7 +46,7 @@ Redirections.grid.Redirects = function(config) {
 	        	fn			: this.filterSearch,
 	        	scope		: this
 	        },
-	        'render'		: {
+	        'render'	: {
 		        fn			: function(cmp) {
 			        new Ext.KeyMap(cmp.getEl(), {
 				        key		: Ext.EventObject.ENTER,
@@ -54,7 +54,7 @@ Redirections.grid.Redirects = function(config) {
 				        scope	: cmp
 			        });
 		        },
-		        scope	: this
+		        scope		: this
 	        }
         }
     }, {
@@ -218,14 +218,14 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
     },
     removeRedirect: function(btn, e) {
     	MODx.msg.confirm({
-        	title 	: _('redirections.redirect_remove'),
-        	text	: _('redirections.redirect_remove_confirm'),
-        	url		: Redirections.config.connector_url,
-        	params	: {
-            	action	: 'mgr/redirects/remove',
-            	id		: this.menu.record.id
+        	title 		: _('redirections.redirect_remove'),
+        	text		: _('redirections.redirect_remove_confirm'),
+        	url			: Redirections.config.connector_url,
+        	params		: {
+            	action		: 'mgr/redirects/remove',
+            	id			: this.menu.record.id
             },
-            listeners: {
+            listeners	: {
             	'success'	: {
             		fn			: this.refresh,
             		scope		: this
@@ -241,15 +241,15 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         }
         
     	MODx.msg.confirm({
-        	title 	: _('redirections.redirects_activate_selected'),
-        	text	: _('redirections.redirects_activate_selected_confirm'),
-        	url		: Redirections.config.connector_url,
-        	params	: {
-            	action	: 'mgr/redirects/activateselected',
-            	ids		: cs,
-            	type	: btn.name
+        	title 		: _('redirections.redirects_activate_selected'),
+        	text		: _('redirections.redirects_activate_selected_confirm'),
+        	url			: Redirections.config.connector_url,
+        	params		: {
+            	action		: 'mgr/redirects/activateselected',
+            	ids			: cs,
+            	type		: btn.name
             },
-            listeners: {
+            listeners	: {
             	'success'	: {
             		fn			: function() {
             			this.getSelectionModel().clearSelections(true);
@@ -268,14 +268,14 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         }
         
     	MODx.msg.confirm({
-        	title 	: _('redirections.redirects_remove_selected'),
-        	text	: _('redirections.redirects_remove_selected_confirm'),
-        	url		: Redirections.config.connector_url,
-        	params	: {
-            	action	: 'mgr/redirects/removeselected',
-            	ids		: cs
+        	title 		: _('redirections.redirects_remove_selected'),
+        	text		: _('redirections.redirects_remove_selected_confirm'),
+        	url			: Redirections.config.connector_url,
+        	params		: {
+            	action		: 'mgr/redirects/removeselected',
+            	ids			: cs
             },
-            listeners: {
+            listeners	: {
             	'success'	: {
             		fn			: function() {
             			this.getSelectionModel().clearSelections(true);
@@ -311,10 +311,6 @@ Redirections.window.CreateRedirect = function(config) {
         url			: Redirections.config.connector_url,
         baseParams	: {
             action		: 'mgr/redirects/create'
-        },
-        defauls		: {
-	        labelAlign	: 'top',
-            border		: false
         },
         fields		: [{
         	layout		: 'column',
@@ -415,10 +411,6 @@ Redirections.window.UpdateRedirect = function(config) {
         baseParams	: {
             action		: 'mgr/redirects/update'
         },
-        defauls		: {
-	        labelAlign	: 'top',
-            border		: false
-        },
         fields		: [{
             xtype		: 'hidden',
             name		: 'id'
@@ -518,8 +510,8 @@ Redirections.combo.RedirectTypes = function(config) {
             fields	: ['type','label'],
             data	: [
                 ['301', 'HTTP/1.1 301 Moved Permanently'],
-               	['302', 'HTTP/1.1 302 Found'],
-               	['303', 'HTTP/1.1 303 See Other']
+				['302', 'HTTP/1.1 302 Found'],
+				['303', 'HTTP/1.1 303 See Other']
             ]
         }),
         remoteSort	: ['label', 'asc'],
