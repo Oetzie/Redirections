@@ -36,7 +36,8 @@
 		public function initialize() {
 			$this->redirections = $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path').'components/redirections/').'model/redirections/');
 			
-			$this->addJavascript($this->modx->getOption('js_url', $this->redirections->config).'mgr/redirections.js');
+			$this->addJavascript($this->redirections->config['js_url'].'mgr/redirections.js');
+			
 			$this->addHtml('<script type="text/javascript">
 				Ext.onReady(function() {
 					MODx.config.help_url = "http://rtfm.modx.com/extras/revo/'.$this->redirections->getHelpUrl().'";
@@ -53,7 +54,7 @@
 		 * @return Array.
 		 */
 		public function getLanguageTopics() {
-			return array('redirections:default', 'setting');
+			return $this->redirections->config['lexicons'];
 		}
 		
 		/**

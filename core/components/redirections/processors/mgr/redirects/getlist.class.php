@@ -67,7 +67,8 @@
 			$this->redirections = $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path').'components/redirections/').'model/redirections/');
 
 			$this->setDefaultProperties(array(
-				'dateFormat' => $this->modx->getOption('manager_date_format') .', '. $this->modx->getOption('manager_time_format')
+				'context'		=> '',
+				'dateFormat' 	=> $this->modx->getOption('manager_date_format') .', '. $this->modx->getOption('manager_time_format')
 			));
 			
 			return parent::initialize();
@@ -79,12 +80,10 @@
 		 * @return Object.
 		 */
 		public function prepareQueryBeforeCount(xPDOQuery $c) {
-			$context = $this->getProperty('context');
-			
-			if (!empty($context)) {
-				$c->where(array('context' => $context));
-			}
-			
+			$c->where(array(
+				'context' => $this->getProperty('context')
+			));
+					
 			$query = $this->getProperty('query');
 			
 			if (!empty($query)) {

@@ -25,7 +25,7 @@ Redirections.grid.Redirects = function(config) {
 		}]
 	}, '->', {
     	xtype		: 'modx-combo-context',
-    	hidden		: 0 == parseInt(Redirections.config.context) ? true : false,
+    	hidden		: Redirections.config.context,
     	name		: 'redirections-filter-context',
         id			: 'redirections-filter-context',
         emptyText	: _('redirections.filter_context'),
@@ -35,7 +35,10 @@ Redirections.grid.Redirects = function(config) {
 	            scope		: this   
 		    }
 		},
-		width: 250
+		baseParams	: {
+			action		: 'context/getlist',
+			exclude		: 'mgr'
+		}
     }, '-', {
         xtype		: 'textfield',
         name 		: 'redirections-filter-search',
@@ -140,14 +143,10 @@ Redirections.grid.Redirects = function(config) {
         },
         autosave	: true,
         save_action	: 'mgr/redirects/updatefromgrid',
-        fields		: ['id', 'context', 'old', 'new', 'type', 'active', 'editedon'],
+        fields		: ['id', 'context', 'context_name', 'old', 'new', 'type', 'active', 'editedon'],
         paging		: true,
         pageSize	: MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
-        sortBy		: 'id',
-        grouping	: 0 == parseInt(Redirections.config.context) ? false : true,
-        groupBy		: 'context',
-        singleText	: _('redirections.redirect'),
-        pluralText	: _('redirections.redirects')
+        sortBy		: 'id'
     });
     
     Redirections.grid.Redirects.superclass.constructor.call(this, config);
@@ -374,18 +373,18 @@ Redirections.window.CreateRedirect = function(config) {
         	cls			: 'desc-under'
         }, {
 	    	layout		: 'form',
-	    	hidden		: 0 == parseInt(Redirections.config.context) ? true : false,
-			defaults 	: {
-				labelSeparator : ''	
-			},
+	    	labelSeparator : ''	,
+	    	hidden		: Redirections.config.context,
 	    	items		: [{
 	        	xtype		: 'modx-combo-context',
 	        	fieldLabel	: _('redirections.label_context'),
 	        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
 	        	name		: 'context',
 	        	anchor		: '100%',
-	        	allowBlank	: false,
-	        	value		: MODx.config.default_context
+				baseParams	: {
+					action		: 'context/getlist',
+					exclude		: 'mgr'
+				}
 	        }, {
 	        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
 	        	html		: _('redirections.label_context_desc'),
@@ -475,17 +474,18 @@ Redirections.window.UpdateRedirect = function(config) {
         	cls			: 'desc-under'
         }, {
 	    	layout		: 'form',
-	    	hidden		: 0 == parseInt(Redirections.config.context) ? true : false,
-			defaults 	: {
-				labelSeparator : ''	
-			},
+	    	labelSeparator : '',
+	    	hidden		: Redirections.config.context,
 	    	items		: [{
 	        	xtype		: 'modx-combo-context',
 	        	fieldLabel	: _('redirections.label_context'),
 	        	description	: MODx.expandHelp ? '' : _('redirections.label_context_desc'),
 	        	name		: 'context',
 	        	anchor		: '100%',
-	        	allowBlank	: false
+				baseParams	: {
+					action		: 'context/getlist',
+					exclude		: 'mgr'
+				}
 	        }, {
 	        	xtype		: MODx.expandHelp ? 'label' : 'hidden',
 	        	html		: _('redirections.label_context_desc'),

@@ -50,7 +50,7 @@
 			$this->config = array_merge(array(
 				'namespace'				=> $this->modx->getOption('namespace', $config, 'redirections'),
 				'helpurl'				=> $this->modx->getOption('namespace', $config, 'redirections'),
-				'language'				=> 'redirections:default',
+				'lexicons'				=> array('redirections:default'),
 				'base_path'				=> $corePath,
 				'core_path' 			=> $corePath,
 				'model_path' 			=> $corePath.'model/',
@@ -70,6 +70,14 @@
 			), $config);	
 		
 			$this->modx->addPackage('redirections', $this->config['model_path']);
+			
+			if (is_array($this->config['lexicons'])) {
+				foreach ($this->config['lexicons'] as $lexicon) {
+					$this->modx->lexicon->load($lexicon);
+				}
+			} else {
+				$this->modx->lexicon->load($this->config['lexicons']);
+			}
 		}
 		
 		/**
@@ -85,33 +93,31 @@
 		 * @return Boolean.
 		 */
 		private function getContexts() {
-			$context = array();
-			
-			foreach ($this->modx->getCollection('modContext') as $value) {
-				if ('mgr' != $value->key) {
-					$context[] = $value->toArray();
-				}
-			}
-			
-			return 1 == count($context) ? 0 : 1;
+			return 1 == $this->modx->getCount('modContext', array(
+				'key:!=' => 'mgr'
+			));
 		}
 		
 		/**
 		 * @acces public.
 		 * @return Array.
 		 */
-		public function getRedirects() {
+		public function getRedirects($context = array()) {
 			$redirects = array();
 			
+			if (is_string($context)) {
+				$context = explode(',', $context);
+			}
+			
 			$criteria = array(
-				'context' 		=> $this->modx->context->key,
+				'context:IN' 	=> $context + array($this->modx->context->key, ''),
 				'active' 		=> 1
 			);
 	
-			foreach($this->modx->getCollection('RedirectionsRedirects', $criteria) as $key => $value) {
-				$redirects[] = $value->toArray();
+			foreach($this->modx->getCollection('RedirectionsRedirects', $criteria) as $redirect) {
+				$redirects[] = $redirect->toArray();
 			}
-			
+
 			return $redirects;
 		}
 	}

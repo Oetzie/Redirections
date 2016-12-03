@@ -95,6 +95,15 @@
 					)
 				)
 			)
+		),
+		'aggregates' => array(
+			'modContext' => array(
+				'local'			=> 'context',
+				'class'			=> 'modContext',
+				'foreign'		=> 'key',
+				'owner'			=> 'local',
+				'cardinality'	=> 'one'	
+			)
 		)
 	);
 

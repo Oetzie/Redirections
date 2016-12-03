@@ -46,7 +46,7 @@
 	$_lang['redirections.label_new']								= 'new URL';
 	$_lang['redirections.label_new_desc']							= 'The new URL of the redirect to redirect to.';
 	$_lang['redirections.label_context']							= 'Context';
-	$_lang['redirections.label_context_desc']						= 'The context of the redirect.';
+	$_lang['redirections.label_context_desc']						= 'The context of the redirect. If there is no context selected the redirect will be valid on all contexts.';
 	$_lang['redirections.label_type']								= 'Redirect type';
 	$_lang['redirections.label_type_desc']							= 'The type of the redirect.';
 	$_lang['redirections.label_active']								= 'Active';
