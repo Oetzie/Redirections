@@ -3,6 +3,15 @@ Redirections
 ----------------------
 
 ----------------------
+Version: 1.2.0-pl
+Released: 2017-05-12
+----------------------
+- Some bugfixes
+- Connector includes fixed for custom core path
+- Permissions added
+- Dutch lexicon edit
+
+----------------------
 Version: 1.1.1-pl
 Released: 2015-03-29
 ----------------------

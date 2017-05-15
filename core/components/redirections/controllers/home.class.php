@@ -3,7 +3,7 @@
 	/**
 	 * Redirections
 	 *
-	 * Copyright 2016 by Oene Tjeerd de Bruin <info@oetzie.nl>
+	 * Copyright 2017 by Oene Tjeerd de Bruin <modx@oetzie.nl>
 	 *
 	 * This file is part of Redirections, a real estate property listings component
 	 * for MODX Revolution.
@@ -24,9 +24,10 @@
 
 	class RedirectionsHomeManagerController extends RedirectionsManagerController {
 		/**
-		 * @acces public.
+		 * @access public.
 		 */
 		public function loadCustomCssJs() {
+			$this->addCss($this->redirections->config['css_url'].'mgr/redirections.css');
 			
 			$this->addJavascript($this->redirections->config['js_url'].'mgr/widgets/home.panel.js');
 			
@@ -36,7 +37,7 @@
 		}
 		
 		/**
-		 * @acces public.
+		 * @access public.
 		 * @return String.
 		 */
 		public function getPageTitle() {
@@ -44,7 +45,7 @@
 		}
 		
 		/**
-		* @acces public.
+		* @access public.
 		* @return String.
 		*/
 		public function getTemplateFile() {

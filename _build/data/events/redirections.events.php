@@ -2,7 +2,7 @@
 
 	return array(
 		array(
-		    'event' 		=> 'OnWebPageInit',
+		    'event' 		=> 'OnPageNotFound',
 		    'priority' 		=> 0,
 		    'propertyset' 	=> 0
 		)

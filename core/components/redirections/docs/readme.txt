@@ -1,10 +1,9 @@
 ----------------------
 Redirections
 ----------------------
-Version: 1.1.1
+Version: 1.2.0
 Author: Oene Tjeerd de Bruin
-Contact: info@oetzie.nl
+Contact: modx@oetzie.nl
 ----------------------
 
-Redirections gives you a user-friendly interface for managing your site wide
-redirects.
+This use this component the user needs to have the "redirections" permissions.

@@ -21,7 +21,7 @@
 	    'menuindex' 	=> 0,
 	    'params' 		=> '',
 	    'handler' 		=> '',
-	    'permissions'	=> 'administrator'
+	    'permissions'	=> 'redirections'
 	), '', true, true);
 	
 	$menu->addOne($action);

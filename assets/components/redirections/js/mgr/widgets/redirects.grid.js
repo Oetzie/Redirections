@@ -2,44 +2,18 @@ Redirections.grid.Redirects = function(config) {
     config = config || {};
 
 	config.tbar = [{
-        text	: _('redirections.redirect_create'),
-        cls		:'primary-button',
-        handler	: this.createRedirect,
-        scope	: this
+        text		: _('redirections.redirect_create'),
+        cls			: 'primary-button',
+        handler		: this.createRedirect,
+        scope		: this
    }, {
-		text	: _('bulk_actions'),
-		menu	: [{
-			text	: _('redirections.redirects_activate_selected'),
-			name	: 'activate',
-			handler	: this.activateSelectedRedirects,
-			scope	: this
-		}, {
-			text	: _('redirections.redirects_deactivate_selected'),
-			name	: 'deactivate',
-			handler	: this.activateSelectedRedirects,
-			scope	: this
-		}, '-', {
-			text	: _('redirections.redirects_remove_selected'),
-			handler	: this.removeSelectedRedirects,
-			scope	: this
+		text		: _('bulk_actions'),
+		menu		: [{
+			text		: _('redirections.redirects_reset'),
+			handler		: this.resetRedirects,
+			scope		: this
 		}]
 	}, '->', {
-    	xtype		: 'modx-combo-context',
-    	hidden		: Redirections.config.context,
-    	name		: 'redirections-filter-context',
-        id			: 'redirections-filter-context',
-        emptyText	: _('redirections.filter_context'),
-        listeners	: {
-        	'select'	: {
-	            fn			: this.filterContext,
-	            scope		: this   
-		    }
-		},
-		baseParams	: {
-			action		: 'context/getlist',
-			exclude		: 'mgr'
-		}
-    }, '-', {
         xtype		: 'textfield',
         name 		: 'redirections-filter-search',
         id			: 'redirections-filter-search',
@@ -73,10 +47,8 @@ Redirections.grid.Redirects = function(config) {
         }
     }];
     
-    sm = new Ext.grid.CheckboxSelectionModel();
-
     columns = new Ext.grid.ColumnModel({
-        columns: [sm, {
+        columns: [{
             header		: _('redirections.label_old'),
             dataIndex	: 'old',
             sortable	: true,
@@ -134,12 +106,12 @@ Redirections.grid.Redirects = function(config) {
     });
     
     Ext.applyIf(config, {
-    	sm			: sm,
     	cm			: columns,
         id			: 'redirections-grid-redirects',
         url			: Redirections.config.connector_url,
         baseParams	: {
-        	action		: 'mgr/redirects/getlist'
+        	action		: 'mgr/redirects/getlist',
+        	context		: MODx.request.context || MODx.config.default_context
         },
         autosave	: true,
         save_action	: 'mgr/redirects/updatefromgrid',
@@ -153,19 +125,16 @@ Redirections.grid.Redirects = function(config) {
 };
 
 Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
-	filterContext: function(tf, nv, ov) {
-        this.getStore().baseParams.context = tf.getValue();
-        this.getBottomToolbar().changePage(1);
-    },
     filterSearch: function(tf, nv, ov) {
         this.getStore().baseParams.query = tf.getValue();
+        
         this.getBottomToolbar().changePage(1);
     },
     clearFilter: function() {
-    	this.getStore().baseParams.context = '';
 	    this.getStore().baseParams.query = '';
-	    Ext.getCmp('redirections-filter-context').reset();
+	   
 	    Ext.getCmp('redirections-filter-search').reset();
+	    
         this.getBottomToolbar().changePage(1);
     },
     getMenu: function() {
@@ -184,13 +153,13 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         
         this.createRedirectWindow = MODx.load({
 	        xtype		: 'redirections-window-redirect-create',
-	        closeAction	:'close',
+	        closeAction	: 'close',
 	        listeners	: {
 		        'success'	: {
 		        	fn			: this.refresh,
 		        	scope		: this
 		        }
-	         }
+	        }
         });
         
         this.createRedirectWindow.show(e.target);
@@ -203,13 +172,13 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         this.updateRedirectWindow = MODx.load({
 	        xtype		: 'redirections-window-redirect-update',
 	        record		: this.menu.record,
-	        closeAction	:'close',
+	        closeAction	: 'close',
 	        listeners	: {
 		        'success'	: {
 		        	fn			: this.refresh,
 		        	scope		: this
 		        }
-	         }
+	        }
         });
         
         this.updateRedirectWindow.setValues(this.menu.record);
@@ -232,54 +201,18 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
             }
     	});
     },
-    activateSelectedRedirects: function(btn, e) {
-    	var cs = this.getSelectedAsList();
-    	
-        if (cs === false) {
-        	return false;
-        }
-        
+    resetRedirects: function(btn, e) {
     	MODx.msg.confirm({
-        	title 		: _('redirections.redirects_activate_selected'),
-        	text		: _('redirections.redirects_activate_selected_confirm'),
+        	title 		: _('redirections.redirects_reset'),
+        	text		: _('redirections.redirects_reset_confirm'),
         	url			: Redirections.config.connector_url,
         	params		: {
-            	action		: 'mgr/redirects/activateselected',
-            	ids			: cs,
-            	type		: btn.name
+            	action		: 'mgr/redirects/reset',
+				context		: MODx.request.context || MODx.config.default_context
             },
             listeners	: {
             	'success'	: {
-            		fn			: function() {
-            			this.getSelectionModel().clearSelections(true);
-            			this.refresh();
-            		},
-            		scope		: this
-            	}
-            }
-    	});
-    },
-    removeSelectedRedirects: function(btn, e) {
-    	var cs = this.getSelectedAsList();
-    	
-        if (cs === false) {
-        	return false;
-        }
-        
-    	MODx.msg.confirm({
-        	title 		: _('redirections.redirects_remove_selected'),
-        	text		: _('redirections.redirects_remove_selected_confirm'),
-        	url			: Redirections.config.connector_url,
-        	params		: {
-            	action		: 'mgr/redirects/removeselected',
-            	ids			: cs
-            },
-            listeners	: {
-            	'success'	: {
-            		fn			: function() {
-            			this.getSelectionModel().clearSelections(true);
-            			this.refresh();
-            		},
+            		fn			: this.refresh,
             		scope		: this
             	}
             }
@@ -305,6 +238,7 @@ Redirections.window.CreateRedirect = function(config) {
     config = config || {};
     
     Ext.applyIf(config, {
+	    width		: 400,
     	autoHeight	: true,
         title 		: _('redirections.redirect_create'),
         url			: Redirections.config.connector_url,
@@ -319,7 +253,7 @@ Redirections.window.CreateRedirect = function(config) {
                 labelSeparator : ''
             },
         	items		: [{
-	        	columnWidth	: .9,
+	        	columnWidth	: .85,
 	        	items		: [{
 			        xtype		: 'textfield',
 		            fieldLabel	: _('redirections.label_old'),
@@ -333,7 +267,7 @@ Redirections.window.CreateRedirect = function(config) {
 		            cls			: 'desc-under'
 		        }]
 	        }, {
-		        columnWidth	: .1,
+		        columnWidth	: .15,
 		        style		: 'margin-right: 0;',
 		        items		: [{
 			        xtype		: 'checkbox',
@@ -354,8 +288,7 @@ Redirections.window.CreateRedirect = function(config) {
         	description	: MODx.expandHelp ? '' : _('redirections.label_new_desc'),
         	name		: 'new',
         	anchor		: '100%',
-        	allowBlank	: false,
-        	maxLength	: 75
+        	allowBlank	: false
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
             html		: _('redirections.label_new_desc'),
@@ -366,7 +299,7 @@ Redirections.window.CreateRedirect = function(config) {
         	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
         	name		: 'type',
         	anchor		: '100%',
-        	allowBlank	: false,
+        	allowBlank	: false
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
         	html		: _('redirections.label_type_desc'),
@@ -404,6 +337,7 @@ Redirections.window.UpdateRedirect = function(config) {
     config = config || {};
     
     Ext.applyIf(config, {
+	    width		: 400,
     	autoHeight	: true,
         title 		: _('redirections.redirect_update'),
         url			: Redirections.config.connector_url,
@@ -421,7 +355,7 @@ Redirections.window.UpdateRedirect = function(config) {
                 labelSeparator : ''
             },
         	items		: [{
-	        	columnWidth	: .9,
+	        	columnWidth	: .85,
 	        	items		: [{
 			        xtype		: 'textfield',
 		            fieldLabel	: _('redirections.label_old'),
@@ -435,7 +369,7 @@ Redirections.window.UpdateRedirect = function(config) {
 		            cls			: 'desc-under'
 		        }]
 	        }, {
-		        columnWidth	: .1,
+		        columnWidth	: .15,
 		        style		: 'margin-right: 0;',
 		        items		: [{
 			        xtype		: 'checkbox',
@@ -455,8 +389,7 @@ Redirections.window.UpdateRedirect = function(config) {
         	description	: MODx.expandHelp ? '' : _('redirections.label_new_desc'),
         	name		: 'new',
         	anchor		: '100%',
-        	allowBlank	: false,
-        	maxLength	: 75
+        	allowBlank	: false
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
             html		: _('redirections.label_new_desc'),
@@ -467,7 +400,7 @@ Redirections.window.UpdateRedirect = function(config) {
         	description	: MODx.expandHelp ? '' : _('redirections.label_type_desc'),
         	name		: 'type',
         	anchor		: '100%',
-        	allowBlank	: false,
+        	allowBlank	: false
         }, {
         	xtype		: MODx.expandHelp ? 'label' : 'hidden',
         	html		: _('redirections.label_type_desc'),
