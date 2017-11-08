@@ -31,7 +31,7 @@
         "value"         : "//www.werkvanoetzie.nl/extras/redirections"
     }, {
         "key"           : "files",
-        "values"        : "pdf,txt,doc,txt,jpg,jpeg,png,gif,ico,js,css"
+        "value"         : "pdf,txt,doc,txt,jpg,jpeg,png,gif,ico,js,css"
     }, {
         "key"           : "migrate",
         "value"         : 0,
