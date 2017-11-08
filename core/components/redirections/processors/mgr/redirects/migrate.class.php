@@ -19,7 +19,13 @@
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
 
-	abstract class RedirectionsManagerController extends modExtraManagerController {
+	class RedirectionsRedirectsMigrateProcessor extends modProcessor {
+		/**
+		 * @access public.
+		 * @var Array.
+		 */
+		public $languageTopics = array('redirections:default');
+		
 		/**
 		 * @access public.
 		 * @var Object.
@@ -32,48 +38,53 @@
 		 */
 		public function initialize() {
 			$this->redirections = $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path').'components/redirections/').'model/redirections/');
-			
-			$this->addJavascript($this->redirections->config['js_url'].'mgr/redirections.js');
-			
-			$this->addHtml('<script type="text/javascript">
-				Ext.onReady(function() {
-					MODx.config.help_url = "'.$this->redirections->getHelpUrl().'";
-					
-					Redirections.config = '.$this->modx->toJSON(array_merge($this->redirections->config, array(
-                        'branding_url'          => $this->redirections->getBrandingUrl(),
-                        'branding_url_help'     => $this->redirections->getHelpUrl()
-                    ))).';
-				});
-			</script>');
-			
+
 			return parent::initialize();
 		}
 		
 		/**
 		 * @access public.
-		 * @return Array.
+		 * @return Mixed.
 		 */
-		public function getLanguageTopics() {
-			return $this->redirections->config['lexicons'];
-		}
-		
-		/**
-		 * @access public.
-		 * @returns Boolean.
-		 */	    
-		public function checkPermissions() {
-			return $this->modx->hasPermission('redirections');
-		}
-	}
-		
-	class IndexManagerController extends RedirectionsManagerController {
-		/**
-		 * @access public.
-		 * @return String.
-		 */
-		public static function getDefaultController() {
-			return 'home';
+		public function process() {
+			$c = array(
+				'key:!=' => 'mgr'
+			);
+			
+			foreach ($this->modx->getCollection('modContext', $c) as $context) {
+				$c = array(
+					'context_key' => $context->key
+				);
+				
+				foreach ($this->modx->getCollection('modResource', $c) as $resource) {
+					$properties = $resource->getProperties('redirections');
+					
+					if (!isset($properties['url'])) {
+						$resource->setProperties(array_merge($properties, array(
+							'uri' => trim($resource->get('uri'), '/')
+						)), 'redirections');
+					}
+					
+					$resource->save();
+				}
+			}
+			
+			if (null !== ($setting = $this->modx->getObject('modSystemSetting', 'redirections.migrate'))) {
+				$setting->fromArray(array(
+					'value' => 1
+				));
+				
+				if ($setting->save()) {
+					$this->modx->cacheManager->refresh(array(
+						'system_settings' => array()
+					));
+				}
+			}
+			
+			return $this->success('', array());
 		}
 	}
 
+	return 'RedirectionsRedirectsMigrateProcessor';
+	
 ?>

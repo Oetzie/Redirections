@@ -7,11 +7,19 @@ Redirections.page.Home = function(config) {
 	
 	config.buttons = [];
 	
-	if (Redirections.config.branding) {
+	if (Redirections.config.branding_url) {
 		config.buttons.push({
 			text 		: 'Redirections ' + Redirections.config.version,
 			cls			: 'x-btn-branding',
 			handler		: this.loadBranding
+		});
+	}
+	
+	if (!Redirections.config.migrate) {
+		config.buttons.push({
+			text		: _('redirections.migrate_redirections'),
+			cls			: 'x-btn-migrate',
+			handler		: this.migrateRedirections
 		});
 	}
 	
@@ -31,11 +39,15 @@ Redirections.page.Home = function(config) {
 			action		: 'context/getlist',
 			exclude		: 'mgr'
 		}
-    }, {
-		text		: _('help_ex'),
-		handler		: MODx.loadHelpPane,
-		scope		: this
-	});
+    });
+    
+    if (Redirections.config.branding_url_help) {
+	    config.buttons.push({
+			text		: _('help_ex'),
+			handler		: MODx.loadHelpPane,
+			scope		: this
+		});
+	}
 	
 	Ext.applyIf(config, {
 		components	: [{
@@ -59,6 +71,35 @@ Ext.extend(Redirections.page.Home, MODx.Component, {
 	    });
 	    
         MODx.loadPage('?' + Ext.urlEncode(request));
+	},
+	migrateRedirections: function(btn) {
+		MODx.msg.confirm({
+        	title 		: _('redirections.migrate_redirections'),
+        	text		: _('redirections.migrate_redirections_confirm'),
+        	url			: Redirections.config.connector_url,
+        	params		: {
+            	action		: 'mgr/redirects/migrate'
+            },
+            listeners	: {
+            	'success'	: {
+            		fn			: function() {
+						MODx.msg.status({
+							title	: _('redirections.migrate_redirections_success'),
+							message	: _('redirections.migrate_redirections_success_desc')
+						});
+						
+						window.location.reload();
+            		},
+            		scope		: this
+            	},
+            	'failure'	: {
+			    	fn 			: function(data) {
+				    	MODx.msg.alert(_('warning'), data.message);
+			    	},
+			    	scope 		: this
+		    	}
+            }
+    	});
 	}
 });
 

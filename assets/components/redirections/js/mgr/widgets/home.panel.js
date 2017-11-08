@@ -9,15 +9,32 @@ Redirections.panel.Home = function(config) {
             id			: 'redirections-header',
             cls			: 'modx-page-header'
         }, {
-        	layout		: 'form',
-            items		: [{
-            	html			: '<p>' + _('redirections.redirects_desc') + '</p>',
-                bodyCssClass	: 'panel-desc'
-            }, {
-                xtype			: 'redirections-grid-redirects',
-                cls				: 'main-wrapper',
-                preventRender	: true
-            }]
+	        xtype		: 'modx-tabs',
+			items		: [{
+	        	layout		: 'form',
+	        	title		: _('redirections.redirects'),
+	            items		: [{
+	            	html			: '<p>' + _('redirections.redirects_desc') + '</p>',
+	                bodyCssClass	: 'panel-desc'
+	            }, {
+	                xtype			: 'redirections-grid-redirects',
+	                cls				: 'main-wrapper',
+	                preventRender	: true,
+	                refreshGrid		: ['redirections-grid-errors']
+	            }]
+	        }, {
+	        	layout		: 'form',
+	        	title		: _('redirections.errors'),
+	            items		: [{
+	            	html			: '<p>' + _('redirections.errors_desc') + '</p>',
+	                bodyCssClass	: 'panel-desc'
+	            }, {
+	                xtype			: 'redirections-grid-errors',
+	                cls				: 'main-wrapper',
+	                preventRender	: true,
+	                refreshGrid		: ['redirections-grid-redirects']
+	            }]
+	        }]
         }]
     });
 

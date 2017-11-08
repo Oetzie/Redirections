@@ -15,9 +15,9 @@ Redirections.grid.Redirects = function(config) {
 		}]
 	}, '->', {
         xtype		: 'textfield',
-        name 		: 'redirections-filter-search',
-        id			: 'redirections-filter-search',
-        emptyText	: _('search')+'...',
+        name 		: 'redirections-filter-search-redirects',
+        id			: 'redirections-filter-search-redirects',
+        emptyText	: _('search') + '...',
         listeners	: {
 	        'change'	: {
 	        	fn			: this.filterSearch,
@@ -37,7 +37,7 @@ Redirections.grid.Redirects = function(config) {
     }, {
     	xtype		: 'button',
     	cls			: 'x-form-filter-clear',
-    	id			: 'redirections-filter-clear',
+    	id			: 'redirections-filter-clear-redirects',
     	text		: _('filter_clear'),
     	listeners	: {
         	'click'		: {
@@ -47,36 +47,22 @@ Redirections.grid.Redirects = function(config) {
         }
     }];
     
-    columns = new Ext.grid.ColumnModel({
+    var columns = new Ext.grid.ColumnModel({
         columns: [{
             header		: _('redirections.label_old'),
-            dataIndex	: 'old',
+            dataIndex	: 'old_formatted',
             sortable	: true,
-            editable	: true,
+            editable	: false,
             width		: 150,
-            editor		: {
-            	xtype		: 'textfield'
-            }
+            renderer	: this.renderUrl
         }, {
             header		: _('redirections.label_new'),
-            dataIndex	: 'new',
+            dataIndex	: 'new_formatted',
             sortable	: true,
-            editable	: true,
-            width		: 100,
+            editable	: false,
+            width		: 300,
             fixed		: true,
-            editor		: {
-            	xtype		: 'textfield'
-            }
-        }, {
-            header		: _('redirections.label_type'),
-            dataIndex	: 'type',
-            sortable	: true,
-            editable	: true,
-            width		: 250,
-            fixed		: true,
-            editor		: {
-            	xtype		: 'redirections-combo-xtype'
-            }
+            renderer	: this.renderUrl
         }, {
             header		: _('redirections.label_active'),
             dataIndex	: 'active',
@@ -96,12 +82,6 @@ Redirections.grid.Redirects = function(config) {
             fixed		: true,
 			width		: 200,
 			renderer	: this.renderDate
-        }, {
-            header		: _('context'),
-            dataIndex	: 'context',
-            sortable	: true,
-            hidden		: true,
-            editable	: false
         }]
     });
     
@@ -111,14 +91,14 @@ Redirections.grid.Redirects = function(config) {
         url			: Redirections.config.connector_url,
         baseParams	: {
         	action		: 'mgr/redirects/getlist',
-        	context		: MODx.request.context || MODx.config.default_context
+        	context		: MODx.request.context || MODx.config.default_context,
+        	type		: 'redirects'
         },
-        autosave	: true,
-        save_action	: 'mgr/redirects/updatefromgrid',
-        fields		: ['id', 'context', 'context_name', 'old', 'new', 'type', 'active', 'editedon'],
+        fields		: ['id', 'context', 'old', 'old_formatted', 'new', 'new_formatted', 'type', 'active', 'editedon'],
         paging		: true,
         pageSize	: MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
-        sortBy		: 'id'
+        sortBy		: 'id',
+        refreshGrid : [],
     });
     
     Redirections.grid.Redirects.superclass.constructor.call(this, config);
@@ -133,7 +113,7 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
     clearFilter: function() {
 	    this.getStore().baseParams.query = '';
 	   
-	    Ext.getCmp('redirections-filter-search').reset();
+	    Ext.getCmp('redirections-filter-search-redirects').reset();
 	    
         this.getBottomToolbar().changePage(1);
     },
@@ -144,7 +124,16 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
 	    }, '-', {
 		    text	: _('redirections.redirect_remove'),
 		    handler	: this.removeRedirect
-		 }];
+		}];
+    },
+    refreshGrids: function() {
+	    if ('string' == typeof this.config.refreshGrid) {
+		    Ext.getCmp(this.config.refreshGrid).refresh();
+	    } else {
+		    for (var i = 0; i < this.config.refreshGrid.length; i++) {
+			    Ext.getCmp(this.config.refreshGrid[i]).refresh();
+		    }
+		}
     },
     createRedirect: function(btn, e) {
         if (this.createRedirectWindow) {
@@ -156,7 +145,10 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
 	        closeAction	: 'close',
 	        listeners	: {
 		        'success'	: {
-		        	fn			: this.refresh,
+		        	fn			: function() {
+			        	this.refreshGrids();
+            			this.refresh();
+		        	},
 		        	scope		: this
 		        }
 	        }
@@ -175,7 +167,10 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
 	        closeAction	: 'close',
 	        listeners	: {
 		        'success'	: {
-		        	fn			: this.refresh,
+		        	fn			: function() {
+			        	this.refreshGrids();
+            			this.refresh();
+		        	},
 		        	scope		: this
 		        }
 	        }
@@ -195,7 +190,10 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
             },
             listeners	: {
             	'success'	: {
-            		fn			: this.refresh,
+            		fn			: function() {
+	            		this.refreshGrids();
+            			this.refresh();
+            		},
             		scope		: this
             	}
             }
@@ -208,15 +206,22 @@ Ext.extend(Redirections.grid.Redirects, MODx.grid.Grid, {
         	url			: Redirections.config.connector_url,
         	params		: {
             	action		: 'mgr/redirects/reset',
-				context		: MODx.request.context || MODx.config.default_context
+				context		: MODx.request.context || MODx.config.default_context,
+                type		: 'redirects'
             },
             listeners	: {
             	'success'	: {
-            		fn			: this.refresh,
+            		fn			: function() {
+	            		this.refreshGrids();
+            			this.refresh();
+            		},
             		scope		: this
             	}
             }
     	});
+    },
+    renderUrl: function(d) {
+		return String.format('<a href="{0}" target="_blank">{1}</a>', d, d);  
     },
     renderBoolean: function(d, c) {
     	c.css = 1 == parseInt(d) || d ? 'green' : 'red';

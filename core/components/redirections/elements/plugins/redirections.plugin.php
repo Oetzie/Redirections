@@ -20,18 +20,18 @@
 	 */
 
 	switch($modx->event->name) {
+	    case 'OnDocFormSave':
+	    case 'OnResourceSort':
 	    case 'OnPageNotFound':
     		if ($modx->loadClass('Redirections', $modx->getOption('redirections.core_path', null, $modx->getOption('core_path').'components/redirections/').'model/redirections/', true, true)) {
 		        $redirections = new Redirections($modx);
 		        
 			    if ($redirections instanceOf Redirections) {
-					$redirections->run();
+					$redirections->run($scriptProperties);
 		    	}
 		    }
 
 	        break;
 	}
-	
-	return;
 	
 ?>

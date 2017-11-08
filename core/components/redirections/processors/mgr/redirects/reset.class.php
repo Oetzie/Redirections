@@ -51,6 +51,10 @@
 		public function initialize() {
 			$this->redirections = $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path').'components/redirections/').'model/redirections/');
 
+            $this->setDefaultProperties(array(
+				'type' => 'redirect'
+            ));
+            
 			return parent::initialize();
 		}
 		
@@ -59,9 +63,19 @@
 		 * @return Mixed.
 		 */
 		public function process() {
-			$this->modx->removeCollection($this->classKey, array(
-				'context' => $this->getProperty('context')
-			));
+			if ('error' == $this->getProperty('type')) {
+                $this->modx->removeCollection($this->classKey, array(
+                    'context:IN'    => array($this->getProperty('context'), ''),
+                    'active'        => 2
+                ));
+            } else {;
+                $this->modx->removeCollection($this->classKey, array(
+                    'context:IN'    => array($this->getProperty('context'), ''),
+                    'active:!='     => 2
+                ));
+            }
+            
+			
 			
 			return $this->outputArray(array());
 		}

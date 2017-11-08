@@ -36,8 +36,8 @@
 		 * @access public.
 		 * @param Object $modx.
 		 * @param Array $config.
-		*/
-		function __construct(modX &$modx, array $config = array()) {
+		 */
+		public function __construct(modX &$modx, array $config = array()) {
 			$this->modx =& $modx;
 		
 			$corePath 		= $this->modx->getOption('redirections.core_path', $config, $this->modx->getOption('core_path').'components/redirections/');
@@ -62,11 +62,11 @@
 				'css_url' 				=> $assetsUrl.'css/',
 				'assets_url' 			=> $assetsUrl,
 				'connector_url'			=> $assetsUrl.'connector.php',
-				'version'				=> '1.2.0',
-				'branding'				=> (boolean) $this->modx->getOption('redirections.branding', null, true),
-				'branding_url'			=> 'http://www.oetzie.nl',
-				'branding_help_url'		=> 'http://www.werkvanoetzie.nl/extras/redirections',
-				'context'				=> $this->getContexts()
+				'version'				=> '1.3.0',
+				'branding_url'			=> $this->modx->getOption('redirections.branding_url', null, ''),
+				'branding_help_url'		=> $this->modx->getOption('redirections.branding_url_help', null, ''),
+				'context'				=> $this->getContexts(),
+				'migrate'				=> (bool) $this->modx->getOption('redirections.migrate', null, false)
 			), $config);
 			
 			$this->modx->addPackage('redirections', $this->config['model_path']);
@@ -82,11 +82,27 @@
 		
 		/**
 		 * @access public.
-		 * @return String.
+		 * @return String|Boolean.
 		 */
 		public function getHelpUrl() {
-			return $this->config['branding_help_url'].'?v='.$this->config['version'];
+		    if (!empty($this->config['branding_help_url'])) {
+                return $this->config['branding_help_url'].'?v=' . $this->config['version'];
+            }
+
+            return false;
 		}
+
+        /**
+         * @access public.
+         * @return String|Boolean.
+         */
+        public function getBrandingUrl() {
+            if (!empty($this->config['branding_url'])) {
+                return $this->config['branding_url'];
+            }
+
+            return false;
+        }
 		
 		/**
 		 * @access private.
@@ -100,6 +116,7 @@
 		
 		/**
 		 * @access private.
+		 * @param Array $context.
 		 * @return Array.
 		 */
 		private function getRedirects($context = array()) {
@@ -109,12 +126,12 @@
 				$context = explode(',', $context);
 			}
 			
-			$criteria = array(
+			$c = array(
 				'context:IN' 	=> $context + array($this->modx->context->key, ''),
 				'active' 		=> 1
 			);
 	
-			foreach ($this->modx->getCollection('RedirectionsRedirects', $criteria) as $redirect) {
+			foreach ($this->modx->getCollection('RedirectionsRedirects', $c) as $redirect) {
 				$redirects[] = $redirect;
 			}
 			
@@ -123,61 +140,159 @@
 		
 		/**
 		 * @access public.
+		 * @param Array $scriptProperties.
 		 */
-		public function run() {
-			$request = $_SERVER['REQUEST_URI'];
-			$baseUrl = trim($this->modx->getOption('base_url', null, MODX_BASE_URL));
-	
-			if ('/' !== $baseUrl && '' != $baseUrl) {
-	    		$request = str_replace($baseUrl, '', $request);
-			}
-	
-			$request = trim($request, '/');
-
-			if (!empty($request)) {
-				foreach (array_reverse($this->getRedirects()) as $key => $redirect) {
-					$regex = preg_quote(ltrim($redirect->old, '/'));
-					$regex = str_replace(array('%', '\^', '\$', '/'), array('(.+?)', '^', '$', '\/'), $regex);
-					
-					if (!preg_match('/\^/si', $regex) && !preg_match('/\$/si', $regex)) {
-						$regex = sprintf('/^%s$/si', $regex);
-					} else {
-						$regex = sprintf('/%s/si', $regex);
+		public function run($scriptProperties = array()) {
+			if ('OnDocFormSave' == $this->modx->event->name) {
+				if (isset($scriptProperties['resource'])) {
+					if (null !== ($resource = $scriptProperties['resource'])) {
+						$this->handleResource($resource);
 					}
-	
-					if (preg_match($regex, $request, $matches)) {
-						if (is_numeric($redirect->new)) {
-							$redirect->new = $this->modx->makeUrl($redirect->new );	
-						}
+				}
+			} else if ('OnResourceSort' == $this->modx->event->name) {
+				if (isset($scriptProperties['nodesAffected'])) {
+					foreach ($scriptProperties['nodesAffected'] as $resource) {
+						$this->handleResource($resource);
+					}
+				}
+			} else if ('OnPageNotFound' == $this->modx->event->name) {
+				$request = trim($_SERVER['REQUEST_URI'], '/');
+				$baseUrl = ltrim(trim($this->modx->getOption('base_url', null, MODX_BASE_URL)), '/');
+		
+				if ('/' != $baseUrl && '' != $baseUrl) {
+		    		$request = trim(str_replace($baseUrl, '', $request), '/');
+				}
+		
+				if (!empty($request)) {
+					foreach (array_reverse($this->getRedirects()) as $redirect) {				
+						$location = $redirect->new;
 						
-						foreach ($matches as $key => $value) {
-							$redirect->new = str_replace(sprintf('$%s', $key), $value, $redirect->new);
+						$regex = preg_quote(trim($redirect->old, '/'));
+						$regex = str_replace(array('%', '\^', '\$', '/'), array('(.+?)', '^', '$', '\/'), $regex);
+						
+						if (!preg_match('/\^/si', $regex) && !preg_match('/\$/si', $regex)) {
+							$regex = sprintf('/^%s$/si', $regex);
+						} else {
+							$regex = sprintf('/%s/si', $regex);
 						}
-
-						if (preg_match('/(\[\[\~([0-9]+)\]\])/si', $redirect->new, $matches)) {
-							if (isset($matches[2])) {
-								$redirect->new = str_replace($matches[1], $this->modx->makeUrl($matches[2]), $redirect->new);
+	
+						if (preg_match($regex, $request, $matches)) {
+							if (is_numeric($location)) {
+								$location = $this->modx->makeUrl($location);	
 							}
-						}
-
-						if ($redirect->new != $this->modx->resourceIdentifier) {
-							$baseUrl = ltrim($baseUrl, '/');
-
-							if (!empty($baseUrl)) {
-								if (0 === ($pos = strpos(ltrim($redirect->new, '/'), $baseUrl))) {
-									$redirect->new = ltrim($redirect->new, '/');
-
-									$redirect->new = substr($redirect->new, strlen($baseUrl), strlen($redirect->new));
+							
+							foreach ($matches as $key => $value) {
+								$location = str_replace(sprintf('$%s', $key), $value, $location);
+							}
+	
+							if (preg_match('/(\[\[\~([0-9]+)\]\])/si', $location, $matches)) {
+								if (isset($matches[2])) {
+									$location = str_replace($matches[1], $this->modx->makeUrl($matches[2]), $location);
 								}
 							}
-
-							$this->modx->sendRedirect($redirect->new, array(
-								'responseCode' => $redirect->type
-							));
+							
+							$location = trim($location, '/');
+	
+							if ($location != $this->modx->resourceIdentifier) {
+								if (!empty($baseUrl)) {
+									if (0 === ($pos = strpos($location, $baseUrl))) {
+										$location = substr($location, strlen($baseUrl), strlen($location));
+									}
+								}
+	
+								$this->modx->sendRedirect($location, array(
+									'responseCode' => $redirect->type
+								));
+							}
+						}
+					}
+					
+					$c = array(
+						'context'	=> $this->modx->context->key,
+						'old' 		=> $request
+					);
+					
+					if (0 == $this->modx->getCount('RedirectionsRedirects', $c)) {
+						if (null !== ($redirect = $this->modx->newObject('RedirectionsRedirects'))) {
+							$redirect->fromArray(array_merge($c, array(
+								'active' => 2
+							)));
+							
+							$redirect->save();
+						}
+					}
+				}	
+    		}
+		}
+		
+		/**
+		 * @access protected.
+		 * @param Object $resource.
+		 * @return Boolean.
+		 */
+		protected function handleResource($resource) {
+			if ($resource instanceof modResource) {
+				$properties = $resource->getProperties('redirections');
+							
+				if (isset($properties['uri'])) {
+					$oldUrl = trim($properties['uri'], '/');
+					$newUrl = trim($resource->get('uri'), '/');
+					
+					if (!empty($oldUrl) && !empty($newUrl)) {
+						if ($oldUrl != $newUrl) {
+							$c = array(
+								'context'	=> $resource->context_key,
+								'old'		=> $newUrl,
+								'new'		=> $oldUrl,
+								'active:!='	=> 2
+							);
+							
+							if (null === ($redirect = $this->modx->getObject('RedirectionsRedirects', $c))) {
+								$c = array(
+									'context'	=> $resource->context_key,
+									'old'		=> $oldUrl
+								);
+								
+								if (null === ($redirect = $this->modx->getObject('RedirectionsRedirects', $c))) {
+									$redirect = $this->modx->newObject('RedirectionsRedirects', $c);
+								}
+								
+								if (null !== $redirect) {
+									$redirect->fromArray(array(
+										'new' 		=> $newUrl,
+										'type'		=> 'HTTP/1.1 301 Moved Permanently',
+										'active'	=> 1
+									));
+									
+									$redirect->save();
+								}
+							} else {
+								$redirect->remove();
+							}
+							
+							if ($this->modx->getOption('use_alias_path')) {
+								$c = array(
+									'context' => $resource->context_key
+								);
+							
+								if ($childResources = $this->modx->getChildIds($resource->id, 1, $c)) {
+									foreach ($childResources as $childResource) {
+										if (null !== ($childResource = $this->modx->getObject('modResource', $childResource))) {
+											$this->handleResource($childResource);
+										}
+									}
+								}
+							}
 						}
 					}
 				}
-    		}
+				
+				$resource->setProperties(array_merge($properties, array(
+					'uri' => trim($resource->get('uri'), '/')
+				)), 'redirections');
+				
+				return $resource->save();
+			}
 		}
 	}
 	

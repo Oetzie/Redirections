@@ -4,3 +4,19 @@
 	border: none !important;
 	color: #555555 !important;
 }
+
+.x-toolbar-cell .x-form-check-wrap .x-form-cb-label {
+	padding-left: 22px !important;
+	line-height: 12px;
+}
+
+.x-toolbar-cell .x-form-check-wrap .x-form-cb-label:before {
+	top: -3px;
+}
+
+#modx-action-buttons .x-btn-migrate {
+	color: #363e43 !important;
+	border-color: #f9c316 !important;
+	background-color: #f9c316 !important;
+	box-shadow: none !important;
+}

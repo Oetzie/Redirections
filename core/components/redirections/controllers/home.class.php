@@ -21,6 +21,8 @@
 	 * Redirections; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
+	 
+    require_once dirname(dirname(__FILE__)).'/index.class.php';
 
 	class RedirectionsHomeManagerController extends RedirectionsManagerController {
 		/**
@@ -32,6 +34,7 @@
 			$this->addJavascript($this->redirections->config['js_url'].'mgr/widgets/home.panel.js');
 			
 			$this->addJavascript($this->redirections->config['js_url'].'mgr/widgets/redirects.grid.js');
+			$this->addJavascript($this->redirections->config['js_url'].'mgr/widgets/errors.grid.js');
 			
 			$this->addLastJavascript($this->redirections->config['js_url'].'mgr/sections/home.js');
 		}

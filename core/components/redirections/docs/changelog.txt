@@ -3,6 +3,14 @@ Redirections
 ----------------------
 
 ----------------------
+Version: 1.3.0-pl
+Released: 2017-11-08
+----------------------
+- Some bugfixes
+- Auto create redirects
+- 404 page reporting
+
+----------------------
 Version: 1.2.0-pl
 Released: 2017-05-12
 ----------------------

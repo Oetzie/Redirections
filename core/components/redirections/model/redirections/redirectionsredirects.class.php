@@ -19,6 +19,23 @@
 	 * Suite 330, Boston, MA 02111-1307 USA
 	 */
 	 
-	class RedirectionsRedirects extends xPDOSimpleObject {}
+	class RedirectionsRedirects extends xPDOSimpleObject {
+		/**
+		 * @access public.
+		 * @return String.
+		 */
+		public function getSiteUrl() {
+			$c = array(
+				'context_key' 	=> $this->context,
+				'key'	  		=> 'site_url'
+			);
+			
+			if (null !== ($setting = $this->xpdo->getObject('modContextSetting', $c))) {
+				return rtrim($setting->value, '/').'/';
+			}
+			
+			return rtrim($this->xpdo->getOption('site_url'), '/').'/';
+		}
+	}
 	
 ?>
