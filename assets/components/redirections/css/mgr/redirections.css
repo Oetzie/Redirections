@@ -1,22 +1,36 @@
+/* Should be moved to default theme. */
+.x-menu-item-icon {
+    left: 7px !important;
+    font-size: 14px !important;
+    line-height: 16px !important;
+    text-align: center !important;
+}
+
+/* Should be moved to default theme. */
+.x-btn-text .icon {
+    margin-right: 8px;
+}
+
 #modx-action-buttons .x-btn-branding {
-	background: none !important;
-	box-shadow: none !important;
-	border: none !important;
-	color: #555555 !important;
-}
-
-.x-toolbar-cell .x-form-check-wrap .x-form-cb-label {
-	padding-left: 22px !important;
-	line-height: 12px;
-}
-
-.x-toolbar-cell .x-form-check-wrap .x-form-cb-label:before {
-	top: -3px;
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    color: #555555 !important;
 }
 
 #modx-action-buttons .x-btn-migrate {
-	color: #363e43 !important;
-	border-color: #f9c316 !important;
-	background-color: #f9c316 !important;
-	box-shadow: none !important;
+    color: #363e43 !important;
+    border-color: #f9c316 !important;
+    background-color: #f9c316 !important;
+    box-shadow: none !important;
+    margin-left: 0 !important;
+}
+
+.x-toolbar-cell .x-form-check-wrap .x-form-cb-label {
+    padding-left: 22px !important;
+    line-height: 12px;
+}
+
+.x-toolbar-cell .x-form-check-wrap .x-form-cb-label:before {
+    top: -3px;
 }

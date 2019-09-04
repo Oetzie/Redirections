@@ -1,37 +1,18 @@
 <?php
-	
-	/**
-	 * Redirections
-	 *
-	 * Copyright 2017 by Oene Tjeerd de Bruin <modx@oetzie.nl>
-	 *
-	 * Redirections is free software; you can redistribute it and/or modify it under
-	 * the terms of the GNU General Public License as published by the Free Software
-	 * Foundation; either version 2 of the License, or (at your option) any later
-	 * version.
-	 *
-	 * Redirections is distributed in the hope that it will be useful, but WITHOUT ANY
-	 * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-	 * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-	 *
-	 * You should have received a copy of the GNU General Public License along with
-	 * Redirections; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
-	 * Suite 330, Boston, MA 02111-1307 USA
-	 */
+/**
+ * Redirections
+ *
+ * Copyright 2019 by Oene Tjeerd de Bruin <nodx@oetzie.nl>
+ */
 
-	switch($modx->event->name) {
-	    case 'OnDocFormSave':
-	    case 'OnResourceSort':
-	    case 'OnPageNotFound':
-    		if ($modx->loadClass('Redirections', $modx->getOption('redirections.core_path', null, $modx->getOption('core_path').'components/redirections/').'model/redirections/', true, true)) {
-		        $redirections = new Redirections($modx);
-		        
-			    if ($redirections instanceOf Redirections) {
-					$redirections->run($scriptProperties);
-		    	}
-		    }
+if (in_array($modx->event->name, ['OnDocFormSave', 'OnResourceSort', 'OnPageNotFound'], true)) {
+    $instance = $modx->getService('redirectionsplugins', 'RedirectionsPlugins', $modx->getOption('redirections.core_path', null, $modx->getOption('core_path') . 'components/redirections/') . 'model/redirections/');
 
-	        break;
-	}
-	
-?>
+    if ($instance instanceof RedirectionsPlugins) {
+        $method = lcfirst($modx->event->name);
+
+        if (method_exists($instance, $method)) {
+            $instance->$method($scriptProperties);
+        }
+    }
+}

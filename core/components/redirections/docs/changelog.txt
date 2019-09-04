@@ -3,6 +3,17 @@ Redirections
 ----------------------
 
 ----------------------
+Version: 1.4.0-pl
+Released: 2019-05-11
+----------------------
+- Some bugfixes
+    - Urldecode for special characters in the urls
+- Stats added for redirects
+    - Visits and Last visit
+- Exclude contexts
+- Cronjob and processor to clean old 404 page reporting
+
+----------------------
 Version: 1.3.0-pl
 Released: 2017-11-08
 ----------------------

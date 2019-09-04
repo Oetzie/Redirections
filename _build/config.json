@@ -1,0 +1,65 @@
+{
+    "name": "Redirections",
+    "lowCaseName": "redirections",
+    "description": "A redirections solution for MODX Revolution.",
+    "author": "Oetzie.nl",
+    "version": "1.4.0-pl",
+    "package":{
+        "menus": [{
+            "text": "redirections",
+            "description": "redirections.desc",
+            "parent": "components",
+            "action": "home",
+            "permissions": "redirections"
+        }],
+        "elements": {
+            "plugins": [{
+                "name": "Redirections",
+                "file": "redirections.plugin.php",
+                "events": [
+                    "OnDocFormSave",
+                    "OnPageNotFound",
+                    "OnResourceSort"
+                ]
+            }]
+        },
+        "systemSettings": [{
+            "key": "branding_url",
+            "value": "//www.oetzie.nl",
+            "area": "redirections"
+        },{
+            "key": "branding_url_help",
+            "area": "redirections"
+        },{
+            "key": "clean_days",
+            "value": "30",
+            "area": "redirections"
+        },{
+            "key": "cronjob_hash",
+            "area": "redirections"
+        },{
+            "key": "exclude_contexts",
+            "area": "redirections"
+        },{
+            "key": "files",
+            "value": "pdf,txt,doc,txt,jpg,jpeg,png,gif,ico,js,css,map",
+            "area": "redirections"
+        },{
+            "type": "combo-boolean",
+            "key": "migrate",
+            "value": 0,
+            "area": "redirections"
+        }]
+    },
+    "build":{
+        "readme": "docs/readme.txt",
+        "license": "docs/license.txt",
+        "changelog": "docs/changelog.txt",
+        "resolver": {
+            "after": [
+                "tables.resolver.php",
+                "permissions.resolver.php"
+            ]
+        }
+    }
+}

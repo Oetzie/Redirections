@@ -6,7 +6,7 @@
  * Copyright 2019 by Oene Tjeerd de Bruin <nodx@oetzie.nl>
  */
 
-class RedirectionsRedirectsResetProcessor extends modObjectProcessor
+class RedirectionsRedirectsCleanProcessor extends modObjectProcessor
 {
     /**
      * @access public.
@@ -34,10 +34,6 @@ class RedirectionsRedirectsResetProcessor extends modObjectProcessor
     {
         $this->modx->getService('redirections', 'Redirections', $this->modx->getOption('redirections.core_path', null, $this->modx->getOption('core_path') . 'components/redirections/') . 'model/redirections/');
 
-        $this->setDefaultProperties([
-            'type' => 'redirect'
-        ]);
-
         return parent::initialize();
     }
 
@@ -47,20 +43,26 @@ class RedirectionsRedirectsResetProcessor extends modObjectProcessor
      */
     public function process()
     {
-        if ($this->getProperty('type') === 'error') {
-            $this->modx->removeCollection($this->classKey, [
-                'context:IN'    => [$this->getProperty('context'), ''],
-                'active'        => 2
-            ]);
-        } else {
-            $this->modx->removeCollection($this->classKey, [
-                'context:IN'    => [$this->getProperty('context'), ''],
-                'active:!='     => 2
-            ]);
+        $amount = 0;
+
+        $criteria = $this->modx->newQuery($this->classKey);
+
+        $criteria->where([
+            'context:IN'    => [$this->getProperty('context'), ''],
+            'active'        => 2,
+            'last_visit:<'  => date('Y-m-d', strtotime('-' . $this->getProperty('days', $this->modx->redirections->getOption('clean_days')) .' days'))
+        ]);
+
+        foreach ($this->modx->getCollection($this->classKey, $criteria) as $object) {
+            if ($object->remove()) {
+                $amount++;
+            }
         }
 
-        return $this->outputArray([]);
+        return $this->success($this->modx->lexicon('redirections.errors_clean_success', [
+            'amount' => $amount
+        ]));
     }
 }
 
-return 'RedirectionsRedirectsResetProcessor';
+return 'RedirectionsRedirectsCleanProcessor';
